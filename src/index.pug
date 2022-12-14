@@ -1,9 +1,7 @@
-doctype html
-html
-	head
-		meta(charset="utf-8")
-		title hello, world!
-		link(rel="stylesheet" href="styles/main.css")
-		script(src="app.js" defer)
-	body
-		p hello, world!
+extends ./_includes/layouts/base.pug
+
+block prepend head
+	- const script = "app.js"
+
+block content
+	p TODO

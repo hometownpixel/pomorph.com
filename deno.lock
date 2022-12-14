@@ -635,6 +635,7 @@
   },
   "npm": {
     "specifiers": {
+      "jstransformer-markdown-it": "jstransformer-markdown-it@3.0.0",
       "markdown-it-attrs@4.1.6": "markdown-it-attrs@4.1.6_markdown-it@13.0.1",
       "markdown-it-deflist@2.1.0": "markdown-it-deflist@2.1.0",
       "markdown-it@13.0.1": "markdown-it@13.0.1",
@@ -762,6 +763,10 @@
       "js-tokens@4.0.0": {
         "integrity": "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==",
         "dependencies": {}
+      },
+      "jstransformer-markdown-it@3.0.0": {
+        "integrity": "sha512-/2fNT0ir/D0NYI5roBTVRwDV2YBjMfU3f/wSeraKLfOMNxcrIJatjJQy4zPmwQBxqKxUojXBN8hmfQBMTLZ3KA==",
+        "dependencies": { "markdown-it": "markdown-it@13.0.1" }
       },
       "jstransformer@1.0.0": {
         "integrity": "sha512-C9YK3Rf8q6VAPDCCU9fnqo3mAfOH6vUGnMcP4AQAYIEpWtfGLpwOTmZ+igtdK5y+VvI2n3CyYSzy4Qh34eq24A==",

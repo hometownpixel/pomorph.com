@@ -1,0 +1,35 @@
+doctype html
+html
+	head
+		block head
+			meta(charset="utf-8")
+
+			if title
+				- let fullTitle = title + " — Pomorph"
+				title #{fullTitle}
+			else
+				title Pomorph — A simple Pomodoro timer
+
+			if desc
+				meta(name="description" content=desc)
+			else
+				meta(name="description" content="Pomorph is a basic Pomodoro timer with an emphasis on simplicity and attempts at visual aesthetics.")
+			
+			//- Social TODO
+			//- Favicons TODO
+			//- Fonts TODO
+
+			// Styles
+			link(rel="stylesheet" href="/styles/main.css")
+
+			if script
+				// Scripts
+				script(src=script defer)
+	body
+		main
+			block content
+		footer
+			ul
+				li #[a(href="/") Home]
+				li #[a(href="/changelog") Changelog]
+				li #[a(href="/about") About]
