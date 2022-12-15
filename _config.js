@@ -1,7 +1,7 @@
 import lume from "lume/mod.ts";
 import pug from "lume/plugins/pug.ts";
 import sass from "lume/plugins/sass.ts";
-import markdownFilter from "npm:jstransformer-markdown-it"
+import markdownFilter from "npm:jstransformer-markdown-it";
 
 // Basics
 const site = lume({
@@ -21,11 +21,11 @@ site.use(sass({
 }));
 
 // Static copies
-site.copy("./src/assets/favicons", ".")
-site.copy("./src/assets/fonts", "fonts")
-site.copy("./src/assets/img", "img")
+site.copy("assets/favicons", ".");
+site.copy("assets/fonts", "fonts");
+site.copy("assets/img", "img");
 
 // Load assets
-site.loadAssets([".js"])
+site.loadAssets([".js"]);
 
 export default site;

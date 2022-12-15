@@ -1,0 +1,10 @@
+{
+  "lang": "en-US",
+  "name": "Pomorph — A simple Pomodoro timer",
+  "short_name": "Pomorph",
+  "background_color": "#fa7465",
+  "icons": [
+  { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192" },
+  { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}
