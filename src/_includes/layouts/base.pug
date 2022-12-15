@@ -3,6 +3,7 @@ html(lang="en-US")
 	head
 		block head
 			meta(charset="utf-8")
+			meta(name="viewport" content="width=device-width, initial-scale=1")
 
 			if title
 				- let fullTitle = title + " — Pomorph"
@@ -32,8 +33,14 @@ html(lang="en-US")
 				// Scripts
 				script(src=script defer)
 	body
+		// SVG
+		include ../includes/sprites.svg
+
+		// Main
 		main
 			block content
+
+		// Footer
 		footer
 			ul
 				li #[a(href="/") Home]
