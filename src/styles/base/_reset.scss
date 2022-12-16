@@ -1,0 +1,48 @@
+//====================
+// RESET
+//====================
+
+// Adapted from Josh Comeau's custom CSS reset: 
+// https://www.joshwcomeau.com/css/custom-css-reset/
+// Thanks, Josh <3
+
+// Use box-sizing model
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+// Remove default margin, padding, and outline
+* {
+	margin: 0;
+	outline: none;
+	padding: 0;
+}
+
+// Correct mobile landscape text size adjustments
+html {
+	-moz-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+// Allow percentage-based height in the application
+html, body {
+	height: 100%;
+}
+
+ // Improve text rendering
+body {
+	-webkit-font-smoothing: antialiased;
+}
+
+// Improve media defaults
+img, picture, video, canvas, svg {
+	display: block;
+	max-width: 100%;
+}
+
+// Remove built-in form typography rules
+input, button, textarea, select {
+	font: inherit;
+}
