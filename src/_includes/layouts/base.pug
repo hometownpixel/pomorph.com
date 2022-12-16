@@ -6,10 +6,10 @@ html(class="theme--default" lang="en-US")
 			meta(name="viewport" content="width=device-width, initial-scale=1")
 
 			if title
-				- let fullTitle = title + " — Pomorph"
+				- let fullTitle = title + " — " + site.name
 				title #{fullTitle}
 			else
-				title Pomorph — A simple Pomodoro timer
+				title #{site.name} — #{site.tagline}
 
 			if desc
 				meta(name="description" content=desc)
@@ -39,8 +39,4 @@ html(class="theme--default" lang="en-US")
 			block content
 
 		// Footer
-		footer
-			ul
-				li #[a(href="/") Home]
-				li #[a(href="/changelog") Changelog]
-				li #[a(href="/about") About]
+		include ../includes/footer.pug

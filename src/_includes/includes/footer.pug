@@ -1,0 +1,23 @@
+footer.footer
+		a(class="footer__home-link" href="/")
+			svg(class="footer__logo" viewbox="0 0 240 57.2989")
+				use(xlink:href="#pomorph")
+
+		p.footer__tagline #{site.tagline}
+
+		hr.footer__hr--wavy
+
+		ul.footer__list
+			li.footer__item v. #{site.version}
+			li.footer__item
+				a(class="footer__link" href="/changelog/") Changelog
+			li.footer__item
+				a(class="footer__link" href="/about/") About
+
+		hr.footer__hr--dotted
+
+		p.footer__copyright © 2022 Hometown Pixel
+
+		a(class="footer_hmpxl-link" href="https://www.hometownpixel.com/")
+			svg(class="footer__hmpxl-mark" viewbox="0 0 32 32")
+				use(xlink:href="#hmpxl")
