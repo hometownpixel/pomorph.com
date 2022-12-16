@@ -1,4 +1,9 @@
-body {
-	background: rebeccapurple;
-	color: white;
-}
+// Utilities
+@import "utils/variables";
+
+// Base
+@import "base/typography";
+
+// Layout
+// Components
+// Pages

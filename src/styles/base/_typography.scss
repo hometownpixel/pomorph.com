@@ -1,0 +1,77 @@
+//====================
+// TYPOGRAPHY
+//====================
+
+// == LOAD FONTS == //
+// Big thanks to Mario Ranftl for google-webfonts-helper
+// https://github.com/majodev/google-webfonts-helper
+
+/* montserrat-700 - latin-ext_latin */
+@font-face {
+	font-family: "Montserrat";
+	font-style: normal;
+	font-weight: 700;
+	src: local(""),
+			url("/fonts/montserrat-v25-latin-ext_latin-700.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
+			url("/fonts/montserrat-v25-latin-ext_latin-700.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* montserrat-700italic - latin-ext_latin */
+@font-face {
+	font-family: "Montserrat";
+	font-style: italic;
+	font-weight: 700;
+	src: local(""),
+			url("/fonts/montserrat-v25-latin-ext_latin-700italic.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
+			url("/fonts/montserrat-v25-latin-ext_latin-700italic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* space-mono-regular - latin-ext_latin */
+@font-face {
+	font-family: "Space Mono";
+	font-style: normal;
+	font-weight: 400;
+	src: local(""),
+			url("/fonts/space-mono-v12-latin-ext_latin-regular.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
+			url("/fonts/space-mono-v12-latin-ext_latin-regular.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* space-mono-italic - latin-ext_latin */
+@font-face {
+	font-family: "Space Mono";
+	font-style: italic;
+	font-weight: 400;
+	src: local(""),
+			url("/fonts/space-mono-v12-latin-ext_latin-italic.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
+			url("/fonts/space-mono-v12-latin-ext_latin-italic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* space-mono-700 - latin-ext_latin */
+@font-face {
+	font-family: "Space Mono";
+	font-style: normal;
+	font-weight: 700;
+	src: local(""),
+			url("/fonts/space-mono-v12-latin-ext_latin-700.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
+			url("/fonts/space-mono-v12-latin-ext_latin-700.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* space-mono-700italic - latin-ext_latin */
+@font-face {
+	font-family: "Space Mono";
+	font-style: italic;
+	font-weight: 700;
+	src: local(""),
+			url("/fonts/space-mono-v12-latin-ext_latin-700italic.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
+			url("/fonts/space-mono-v12-latin-ext_latin-700italic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+// == DEFAULTS == //
+html {
+	font-family: $font-stack--mono;
+}
+
+h1 {
+	font-family: $font-stack--sans;
+	font-weight: 700;
+}
