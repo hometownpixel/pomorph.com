@@ -1,0 +1,21 @@
+//====================
+// MIXINS
+//====================
+
+// Create default min-width media query
+@mixin mq($breakpoint) {
+	// Check $breakpoints map
+	@if map-has-key($breakpoints, $breakpoint) {
+		$breakpoint-value: get-breakpoint($breakpoint);
+		// Create media query according to value in $breakpoints
+		@media screen and (min-width: $breakpoint-value) {
+			@content;
+		}
+	}
+	// Otherwise, assume it's a number value
+	@else {
+		@media screen and (min-width: $breakpoint) {
+			@content;
+		}
+	}
+}

@@ -2,6 +2,11 @@
 // VARIABLES
 //====================
 
+// == BREAKPOINTS == //
+$breakpoints: (
+	"large": 720px
+);
+
 // == TYPOGRAPHY == //
 // Font stacks
 $fs-mono: "Space Mono", Monaco, Courier, monospace;
