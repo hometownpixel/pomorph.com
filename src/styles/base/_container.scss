@@ -1,0 +1,14 @@
+//====================
+// CONTAINER
+//====================
+
+.container {
+	margin: 0 auto;
+	max-width: $max-width;
+	padding-left: 1.6rem;
+	padding-right: 1.6rem;
+}
+
+.container_readable {
+	max-width: $readable-width;
+}

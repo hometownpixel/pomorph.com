@@ -3,11 +3,16 @@
 //====================
 
 // == BREAKPOINTS == //
+$max-width: 720px;
+$readable-width: 548px;
+
 $breakpoints: (
 	"large": 720px
 );
 
 // == TYPOGRAPHY == //
+$root-size: 10px;
+
 // Font stacks
 $fs-mono: "Space Mono", Monaco, Courier, monospace;
 $fs-sans: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
