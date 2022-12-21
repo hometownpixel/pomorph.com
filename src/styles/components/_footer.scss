@@ -3,9 +3,116 @@
 //====================
 
 .footer {
-	background: blue;
+	// Silvio Rosa's sticky footer trick:
+	// https://css-tricks.com/a-clever-sticky-footer-technique/
+	position: sticky;
+	top: 100vh;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	padding-top: 3.2rem;
+	padding-bottom: 2.4rem;
+}
+
+.footer__logo {
+	fill: var(--color-secondary);
+	width: 21rem;
 
 	@include mq(large) {
-		background: green;
+		width: 24rem;
 	}
+}
+
+.footer__tagline {
+	color: var(--color-secondary);
+	font-size: 1.8rem;
+	text-align: center;
+	text-transform: lowercase;
+
+	@include mq(large) {
+		font-size: 2rem;
+	}
+}
+
+.footer__hr-wave {
+	border: 0;
+	background-image: var(--icon-wave);
+	background-repeat: repeat-x;
+	// Wave icon has a height/width of 24
+	height: 2.4rem;
+	margin-top: .8rem;
+	margin-bottom: .8rem;
+	width: 100%;
+
+	@include mq(medium) {
+		width: 60%;
+	}
+}
+
+.footer__list {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	color: var(--color-secondary);
+	font-family: $fs-sans;
+	font-size: 1.2rem;
+	list-style: none;
+	letter-spacing: .05rem;
+	text-transform: uppercase;
+
+	@include mq(large) {
+		font-size: 1.4rem;
+	}
+}
+
+.footer__item + .footer__item::before {
+	content: "•";
+	margin-left: .8rem;
+	margin-right: .8rem;
+}
+
+.footer__link:link,
+.footer__link:visited {
+	color: var(--color-secondary);
+	text-decoration: none;
+}
+
+.footer__link:focus,
+.footer__link:hover,
+.footer__link:active {
+	border-bottom: .2rem solid;
+}
+
+.footer__hr-dotted {
+	border: 0;
+	border-top: .2rem dotted var(--color-secondary);
+	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
+	width: 75%;
+
+	@include mq(medium) {
+		width: 45%;
+	}
+
+	@include mq(large) {
+		width: 40%;
+	}
+}
+
+.footer__copyright {
+	color: var(--color-secondary);
+	font-family: $fs-sans;
+	font-size: 1rem;
+	text-align: center;
+	text-transform: uppercase;
+
+	@include mq(large) {
+		font-size: 1.2rem;
+	}
+}
+
+.footer__hmpxl {
+	fill: var(--color-secondary);
+	margin-top: .8rem;
+	width: 2.4rem;
 }

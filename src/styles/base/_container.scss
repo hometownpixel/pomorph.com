@@ -7,6 +7,12 @@
 	max-width: $max-width;
 	padding-left: 1.6rem;
 	padding-right: 1.6rem;
+
+	// Remove padding at larger screen size
+	@include mq(large) {
+		padding-left: initial;
+		padding-right: initial;	
+	}
 }
 
 .container_readable {
