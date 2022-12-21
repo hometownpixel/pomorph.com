@@ -1,0 +1,27 @@
+//====================
+// APP
+//====================
+
+.app {
+	background: var(--white);
+}
+
+.timer {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	color: var(--color-primary);
+	font-size: 6.8rem;
+	font-weight: bold;
+
+	@include mq(large) {
+		font-size: 10rem;
+	}
+}
+
+.timer__minutes {
+	border: 0;
+	color: var(--color-primary);
+	padding: 0;
+	text-align: right;
+}

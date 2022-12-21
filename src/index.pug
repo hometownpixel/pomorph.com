@@ -4,5 +4,31 @@ block prepend head
 	- const script = "app.js"
 
 block content
-	main.container
-		h1 TODO
+	main.app.container
+		div.app__inner.container.container_readable
+			//- Sub-dials TODO
+			div.sub-dials
+
+			//- Timer TODO
+			div.timer
+				input(
+					class="timer__minutes"
+					maxlength="2"
+					placeholder="MM"
+					size="2"
+					type="tel"
+				)
+				p :
+					span.timer__seconds 00
+
+			//- Sessions TODO
+			div.sessions
+
+			//- Menu TODO
+			div.menu
+
+//- Sub-dials: 1-10 seconds, total time, 10-60 seconds
+//- Digital timer and time input
+//- Play, pause, stop
+//- Session tracker
+//- Sound, stats, settings

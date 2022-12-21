@@ -11,4 +11,8 @@ html {
 body {
 	background: var(--color-primary);
 	color: var(--mercury);
+
+	@include mq(large) {
+		padding-top: 6.4rem;
+	}
 }
