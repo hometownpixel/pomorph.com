@@ -6,7 +6,8 @@
 	background: var(--white);
 }
 
-.timer {
+.timer,
+.timer-input {
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
@@ -19,7 +20,7 @@
 	}
 }
 
-.timer__minutes {
+.timer-input__minutes {
 	border: 0;
 	color: var(--color-primary);
 	padding: 0;

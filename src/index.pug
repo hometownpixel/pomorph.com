@@ -11,15 +11,23 @@ block content
 
 			//- Timer TODO
 			div.timer
-				input(
-					class="timer__minutes"
-					maxlength="2"
-					placeholder="MM"
-					size="2"
-					type="tel"
-				)
-				p :
-					span.timer__seconds 00
+				p
+					span.timer__minutes
+					span :
+					span.timer__seconds
+			//- div.timer-input
+			//- 	input(
+			//- 		class="timer-input__minutes"
+			//- 		maxlength="2"
+			//- 		placeholder="MM"
+			//- 		size="2"
+			//- 		type="tel"
+			//- 	)
+			//- 	p :
+			//- 		span.timer__seconds 00
+			div.controls
+				button.controls__play Play
+				button.controls__stop Stop
 
 			//- Sessions TODO
 			div.sessions
