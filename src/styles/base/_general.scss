@@ -2,6 +2,11 @@
 // GENERAL
 //====================
 
+::selection {
+	background-color: var(--color-primary);
+	color: var(--white);
+}
+
 html {
 	// Set root font size — stake in the ground from which rem sizes are based
 	font-size: $root-size;
@@ -15,4 +20,14 @@ body {
 	@include mq(large) {
 		padding-top: 6.4rem;
 	}
+}
+
+// Use to hide features/functionality depending on desired state
+.hidden {
+	display: none !important;
+}
+
+// Use to show which items are clickable depending on their state
+.clickable {
+	cursor: pointer;
 }

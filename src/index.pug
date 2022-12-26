@@ -9,25 +9,36 @@ block content
 			//- Sub-dials TODO
 			div.sub-dials
 
-			//- Timer TODO
+			// Timer
 			div.timer
 				p
 					span.timer__minutes
 					span :
 					span.timer__seconds
-			//- div.timer-input
-			//- 	input(
-			//- 		class="timer-input__minutes"
-			//- 		maxlength="2"
-			//- 		placeholder="MM"
-			//- 		size="2"
-			//- 		type="tel"
-			//- 	)
-			//- 	p :
-			//- 		span.timer__seconds 00
+
+			// Timer input
+			div.timer-input.hidden
+				input(
+					class="timer-input__minutes"
+					maxlength="2"
+					placeholder="MM"
+					size="2"
+					type="tel"
+				)
+				p :
+					span.timer__seconds 00
+
+			// Controls
 			div.controls
-				button.controls__play Play
-				button.controls__stop Stop
+				button(class="controls__play" type="button")
+					svg(class="controls__icon-play" viewbox="0 0 32 32")
+						use(xlink:href="#icon-play")
+				button(class="controls__pause hidden" type="button")
+					svg(class="controls__icon-pause" viewbox="0 0 32 32")
+						use(xlink:href="#icon-pause")
+				button(class="controls__stop hidden" type="button")
+					svg(class="controls__icon-stop" viewbox="0 0 32 32")
+						use(xlink:href="#icon-stop")
 
 			//- Sessions TODO
 			div.sessions
