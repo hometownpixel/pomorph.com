@@ -9,33 +9,49 @@ block content
 			//- Sub-dials TODO
 			div.sub-dials
 
+			// Session toggle
+			div.session-toggle
+				button(class="session-toggle__btn" type="button")
+					span.session-toggle__text Work
+					span.session-toggle__display
+					span.session-toggle__text Break
+
 			// Timer
 			div.timer
-				p
-					span.timer__minutes
-					span :
-					span.timer__seconds
+				// Display
+				div.timer-display
+					p
+						span.timer-display__minutes
+						span :
+						span.timer-display__seconds
 
-			// Timer input
-			div.timer-input.hidden
-				input(
-					class="timer-input__minutes"
-					maxlength="2"
-					placeholder="MM"
-					size="2"
-					type="tel"
-				)
-				p :
-					span.timer__seconds 00
+				// Input
+				div.timer-input.hidden
+					input(
+						class="timer-input__minutes"
+						maxlength="2"
+						placeholder="MM"
+						size="2"
+						type="tel"
+					)
+					p :
+						span.timer-input__seconds 00
+
+				// Reset
+				button(class="timer-reset hidden", type="button")
+							svg(class="timer-reset__icon" viewbox="0 0 32 32")
+								use(xlink:href="#icon-reset")
 
 			// Controls
 			div.controls
 				button(class="controls__play" type="button")
 					svg(class="controls__icon-play" viewbox="0 0 32 32")
 						use(xlink:href="#icon-play")
+
 				button(class="controls__pause hidden" type="button")
 					svg(class="controls__icon-pause" viewbox="0 0 32 32")
 						use(xlink:href="#icon-pause")
+				
 				button(class="controls__stop hidden" type="button")
 					svg(class="controls__icon-stop" viewbox="0 0 32 32")
 						use(xlink:href="#icon-stop")

@@ -13,8 +13,10 @@ Sources that were immensely helpful:
 //
 
 // Times
-let minutes = 1;
-let minutesInMs;
+let defaultWorkMinutes = .1;
+let defaultBreakMinutes = .05;
+let tempWorkMinutes, tempBreakMinutes;
+let minutes, minutesInMs;
 
 // Timer state and functionality
 let timerInterval; // Timer's interval ID
@@ -22,14 +24,19 @@ let timerStartTime; // When timer starts
 let timerFinishTime; // When timer stops
 let timerDurationLeft; // How much time is left (used if paused)
 let timerSessionStarted = false; // Whether session has started
+let timerWorkSession = false; // Whether it's a work session
+let timerBreakSession = false; // Whether it's a break session
 let timerRunning = false; // Whether timer is running
 
 // Get UI elements
-const timer = document.querySelector(".timer");
-const timerMinutes = document.querySelector(".timer__minutes");
-const timerSeconds = document.querySelector(".timer__seconds");
+const root = document.querySelector("html")
+const toggle = document.querySelector(".session-toggle__btn")
+const timer = document.querySelector(".timer-display");
+const timerMinutes = document.querySelector(".timer-display__minutes");
+const timerSeconds = document.querySelector(".timer-display__seconds");
 const timerInput = document.querySelector(".timer-input");
 const timerInputMinutes = document.querySelector(".timer-input__minutes");
+const reset = document.querySelector(".timer-reset");
 const play = document.querySelector(".controls__play");
 const pause = document.querySelector(".controls__pause");
 const stop = document.querySelector(".controls__stop");
@@ -39,6 +46,17 @@ const stop = document.querySelector(".controls__stop");
 //
 
 // HELPERS //
+
+function switchTheme(theme) {
+	if (theme == "break") {
+		root.classList.remove("theme-default");
+		root.classList.add("theme-break");
+	}
+	else if (theme == "default") {
+		root.classList.remove("theme-break");
+		root.classList.add("theme-default");
+	}
+}
 
 function hide(selector) {
 	selector.classList.add("hidden");
@@ -65,7 +83,14 @@ function minutesToMs(minutes) {
 // INITIAL LOAD //
 
 function initialLoad() {
-	// When page is first loaded, make timer clickable
+	// When page is first loaded...
+	// Set minutes to default
+	minutes = defaultWorkMinutes;
+
+	// Make sure work session is ready to go
+	timerWorkSession = true;
+
+	// Make timer clickable
 	clickable(timer, true);
 
 	// Add time to timer interface
@@ -73,8 +98,8 @@ function initialLoad() {
 	timerSeconds.innerHTML = "00";
 }
 
-
 // TIMER //
+
 function decideTime(selector) {
 	// Get time value
 	let t = selector.value;
@@ -86,27 +111,87 @@ function decideTime(selector) {
 
 		// Check if value is not a number
 		if (isNaN(t)) {
-			// It's not, so return default time
-			return minutes;
+			// It's not, so check the session and return appropriate time
+			// Work session
+			if (timerWorkSession) {
+				if (tempWorkMinutes) {
+					return tempWorkMinutes;
+				}
+				else {
+					return defaultWorkMinutes;
+				}
+			}
+			// Break session
+			else if (timerBreakSession) {
+				if (tempBreakMinutes) {
+					return tempBreakMinutes;
+				}
+				else {
+					return defaultBreakMinutes;
+				}
+			}
 		}
 		// It is a number...
 		else {
 			// If number is too big or small, return "reasonable" defaults
 			if (t < 1) {
-				return 1;
+				// Work session
+				if (timerWorkSession) {
+					tempWorkMinutes = .1; // Test value
+					return tempWorkMinutes;
+				}
+				// Break session
+				else if (timerBreakSession) {
+					tempBreakMinutes = .05; // Test value
+					return tempBreakMinutes;
+				}
 			}
 			else if (t > 55) {
-				return 55;
+				// Work session
+				if (timerWorkSession) {
+					tempWorkMinutes = .2; // Test value
+					return tempWorkMinutes;
+				}
+				// Break session
+				else if (timerBreakSession) {
+					tempBreakMinutes = .1; // Test value
+					return tempBreakMinutes;
+				}
 			}
 			// Number seems to be fine, so return it
 			else {
-				return t;
+				// Work session
+				if (timerWorkSession) {
+					tempWorkMinutes = t;
+					return tempWorkMinutes;
+				}
+				else if (timerBreakSession) {
+					tempBreakMinutes = t;
+					return tempBreakMinutes;
+				}
 			}
 		}
 	}
 	// Value doesn't exist, so return default
 	else {
-		return minutes;
+		// Work session
+		if (timerWorkSession) {
+			if (tempWorkMinutes) {
+				return tempWorkMinutes;
+			}
+			else {
+				return defaultWorkMinutes;
+			}
+		}
+		// Break session
+		else if (timerBreakSession) {
+			if (tempBreakMinutes) {
+				return tempBreakMinutes;
+			}
+			else {
+				return defaultBreakMinutes;
+			}
+		}
 	}
 }
 
@@ -127,6 +212,19 @@ function timeRemaining(finishTime) {
 
 function startTimer(finishTime) {
 	timerRunning = true;
+
+	// Update UI
+	// Hide timer input (in case it was activated) and show timer that can no longer be clicked
+	hide(timerInput);
+	show(timer);
+	clickable(timer, false);
+
+	// Hide play button and show pause
+	hide(play);
+	show(pause);
+
+	// Since the session has started, show stop
+	show(stop);
 
 	function updateTimer() {
 		// Calculate remaing time
@@ -149,6 +247,7 @@ function startTimer(finishTime) {
 			show(play);
 			hide(stop);
 			clickable(timer, true);
+			checkReset();
 		}
 	}
 
@@ -169,6 +268,10 @@ function pauseTimer() {
 
 	// Make sure to update time, otherwise future calculations will be off
 	minutesInMs = timerDurationLeft;
+
+	// Update UI
+	hide(pause);
+	show(play);
 }
 
 function resumeTimer() {
@@ -179,6 +282,10 @@ function resumeTimer() {
 	// Start
 	timerRunning = true;
 	startTimer(timerFinishTime);
+
+	// Update UI
+	hide(play);
+	show(pause);
 }
 
 function stopTimer() {
@@ -191,6 +298,24 @@ function stopTimer() {
 
 		// Make sure to reset time to original value
 		minutesInMs = minutesToMs(minutes);
+
+		// Update UI
+		// Show play button in case the timer was playing when stopped
+		hide(pause);
+		show(play);
+
+		// Hide stop since the session has been terminated
+		hide(stop);
+
+		// Reset timer interface values
+		timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+		timerSeconds.innerHTML = "00";
+
+		// Make clickable
+		clickable(timer, true);
+
+		// See if reset button should be displayed
+		checkReset()
 	}
 	else {
 		// No session, so don't do anything
@@ -198,9 +323,97 @@ function stopTimer() {
 	}
 }
 
+function breakSession() {
+	// Check if a temporay time has been set, then reset minutes
+	if (tempBreakMinutes) {
+		minutes = tempBreakMinutes;
+	}
+	else {
+		minutes = defaultBreakMinutes;
+	}
+
+	// Update session type
+	timerWorkSession = false;
+	timerBreakSession = true;
+
+	// Update UI
+	toggle.setAttribute("aria-pressed", "true");
+	switchTheme("break");
+
+	// Reset timer interface values
+	timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+	timerSeconds.innerHTML = "00";
+}
+
+function workSession() {
+	// Check if a temporay time has been set, then reset minutes
+	if (tempWorkMinutes) {
+		minutes = tempWorkMinutes;
+	}
+	else {
+		minutes = defaultWorkMinutes;
+	}
+
+	// Update session type
+	timerBreakSession = false;
+	timerWorkSession = true;
+
+	// Update UI
+	toggle.removeAttribute("aria-pressed");
+	switchTheme("default");
+
+	// Reset timer interface values
+	timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+	timerSeconds.innerHTML = "00";
+}
+
+function checkReset() {
+	// Hide first
+	// Handles cases where the timer is started and when the timer is toggled to another session
+	hide(reset);
+
+	// Only show on appropriate session and if the timer hasn't started
+	if (!timerSessionStarted) {
+		if (tempWorkMinutes && timerWorkSession) {
+			show(reset);
+		}
+		else if (tempBreakMinutes && timerBreakSession) {
+			show(reset);
+		}
+	}
+}
+
 //
 // EVENTS
 //
+
+// Toggle
+// Adapted from Kitty Giraudel's "An accessible toggle"
+// https://kittygiraudel.com/2021/04/05/an-accessible-toggle/#button-variant
+toggle.addEventListener("click", function() {
+	// Check if timer has started
+	if (timerSessionStarted) {
+		// It has, so the timer needs to stop
+		stopTimer();
+	}
+
+	// In case time input is active, clear value so that it's not "saved", hide timer input, and show timer
+	timerInputMinutes.value = "";
+	hide(timerInput);
+	show(timer);
+
+	// Work session
+	if (toggle.getAttribute("aria-pressed") === "true") {
+		workSession();
+	}
+	// Break session
+	else {
+		breakSession();
+	}
+
+	// See if reset button should be displayed
+	checkReset();
+});
 
 // Timer
 timer.addEventListener("click", function() {
@@ -226,6 +439,38 @@ timerInputMinutes.addEventListener("input", function() {
 	timerInputMinutes.value = timerInputMinutes.value.replace(/[^0-9+]/g, "");
 });
 
+// Reset
+reset.addEventListener("click", function() {
+	if (!timerSessionStarted) {
+		if (timerWorkSession) {
+			tempWorkMinutes = null;
+			minutes = defaultWorkMinutes;
+
+			// Update UI
+			hide(timerInput);
+			show(timer);
+			hide(reset);
+
+			// Reset timer interface values
+			timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+			timerSeconds.innerHTML = "00";
+		}
+		else if (timerBreakSession) {
+			tempBreakMinutes = null;
+			minutes = defaultBreakMinutes;
+
+			// Update UI
+			hide(timerInput);
+			show(timer);
+			hide(reset);
+
+			// Reset timer interface values
+			timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+			timerSeconds.innerHTML = "00";
+		}
+	}
+});
+
 // Start
 play.addEventListener("click", function() {
 	// Prevent "double" running of the function by checking if a session has already been started
@@ -233,35 +478,24 @@ play.addEventListener("click", function() {
 		// Decide time
 		minutes = decideTime(timerInputMinutes);
 
+		// Clear value in timer input so that it's not "saved" and carried between sessions
+		timerInputMinutes.value = "";
+
 		// Start session
 		timerSessionStarted = true;
+
+		// Hide reset button
+		checkReset();
 
 		// Calculate finish time and start timer
 		timerStartTime = Date.parse(new Date());
 		minutesInMs = minutesToMs(minutes);
 		timerFinishTime = new Date(timerStartTime + minutesInMs);
 		startTimer(timerFinishTime);
-
-		// Update UI
-		// Hide timer input (in case it was activated) and show timer that can no longer be clicked
-		hide(timerInput);
-		show(timer);
-		clickable(timer, false);
-
-		// Hide play button and show pause
-		hide(play);
-		show(pause);
-
-		// Since the session has started, show stop
-		show(stop);
 	}
 	// Resume
 	else if (!timerRunning) {
 		resumeTimer();
-
-		// Update UI
-		hide(play);
-		show(pause);
 	}
 	// Prevent "double" running
 	else {
@@ -274,10 +508,6 @@ pause.addEventListener("click", function() {
 	// Check if timer is running
 	if (timerRunning) {
 		pauseTimer();
-
-		// Update UI
-		hide(pause);
-		show(play);
 	}
 	// Prevent "double" running
 	else {
@@ -288,21 +518,6 @@ pause.addEventListener("click", function() {
 // Stop
 stop.addEventListener("click", function() {
 	stopTimer();
-
-	// Update UI
-	// Show play button in case the timer was playing when stopped
-	hide(pause);
-	show(play);
-
-	// Hide stop since the session has been terminated
-	hide(stop);
-
-	// Reset timer interface values
-	timerMinutes.innerHTML = ("0" + minutes).slice(-2);
-	timerSeconds.innerHTML = "00";
-
-	// Make clickable
-	clickable(timer, true);
 });
 
 //
