@@ -13,9 +13,10 @@ Sources that were immensely helpful:
 //
 
 // Times
-let defaultWorkMinutes = .1;
+let defaultWorkMinutes = .05;
 let defaultBreakMinutes = .05;
-let tempWorkMinutes, tempBreakMinutes;
+let defaultLongBreakMinutes = .2;
+let tempWorkMinutes, tempBreakMinutes, tempLongBreakMinutes;
 let minutes, minutesInMs;
 
 // Timer state and functionality
@@ -26,6 +27,7 @@ let timerDurationLeft; // How much time is left (used if paused)
 let timerSessionStarted = false; // Whether session has started
 let timerWorkSession = false; // Whether it's a work session
 let timerBreakSession = false; // Whether it's a break session
+let timerLongBreakSession = false; // Whether it's a long break session
 let timerRunning = false; // Whether timer is running
 let timerSessions = 0; // Keep track of the number of work sessions
 
@@ -55,13 +57,17 @@ const sessionFour = document.querySelector(".sessions__four");
 // HELPERS //
 
 function switchTheme(theme) {
-	if (theme == "break") {
+	if (theme == "default") {
+		root.classList.remove("theme-break", "theme-long-break");
+		root.classList.add("theme-default");
+	}
+	else if (theme == "break") {
 		root.classList.remove("theme-default");
 		root.classList.add("theme-break");
 	}
-	else if (theme == "default") {
-		root.classList.remove("theme-break");
-		root.classList.add("theme-default");
+	else if (theme == "longbreak") {
+		root.classList.remove("theme-default");
+		root.classList.add("theme-long-break");
 	}
 }
 
@@ -137,6 +143,15 @@ function decideTime(selector) {
 					return defaultBreakMinutes;
 				}
 			}
+			// Long break session
+			else if (timerLongBreakSession) {
+				if (tempLongBreakMinutes) {
+					return tempLongBreakMinutes;
+				}
+				else {
+					return defaultLongBreakMinutes;
+				}
+			}
 		}
 		// It is a number...
 		else {
@@ -152,6 +167,11 @@ function decideTime(selector) {
 					tempBreakMinutes = .05; // Test value
 					return tempBreakMinutes;
 				}
+				// Long break session
+				else if (timerLongBreakSession) {
+					tempLongBreakMinutes = .2; // Test value
+					return tempLongBreakMinutes;
+				}
 			}
 			else if (t > 55) {
 				// Work session
@@ -164,6 +184,11 @@ function decideTime(selector) {
 					tempBreakMinutes = .1; // Test value
 					return tempBreakMinutes;
 				}
+				// Long break session
+				else if (timerLongBreakSession) {
+					tempLongBreakMinutes = .2; // Test value
+					return tempLongBreakMinutes;
+				}
 			}
 			// Number seems to be fine, so return it
 			else {
@@ -172,9 +197,15 @@ function decideTime(selector) {
 					tempWorkMinutes = t;
 					return tempWorkMinutes;
 				}
+				// Break session
 				else if (timerBreakSession) {
 					tempBreakMinutes = t;
 					return tempBreakMinutes;
+				}
+				// Long break session
+				else if (timerLongBreakSession) {
+					tempLongBreakMinutes = t;
+					return tempLongBreakMinutes;
 				}
 			}
 		}
@@ -197,6 +228,15 @@ function decideTime(selector) {
 			}
 			else {
 				return defaultBreakMinutes;
+			}
+		}
+		// Long break session
+		else if (timerLongBreakSession) {
+			if (tempLongBreakMinutes) {
+				return tempLongBreakMinutes;
+			}
+			else {
+				return defaultLongBreakMinutes;
 			}
 		}
 	}
@@ -258,13 +298,23 @@ function startTimer(finishTime) {
 
 			// Automatically swich to a work/break session
 			if (timerWorkSession) {
-				breakSession();
+				// Decide whether a regular or long break
+				if (timerSessions < 4) {
+					breakSession();
+				}
+				else {
+					longBreakSession();
+				}
 				// Make sure to run this last, otherwise the reset button will carry over between sessions
-				checkReset();
+				decideReset();
 			}
 			else if (timerBreakSession) {
 				workSession();
-				checkReset();
+				decideReset();
+			}
+			else if (timerLongBreakSession) {
+				workSession();
+				decideReset();
 			}
 		}
 	}
@@ -333,12 +383,36 @@ function stopTimer() {
 		clickable(timer, true);
 
 		// See if reset button should be displayed
-		checkReset()
+		decideReset()
 	}
 	else {
 		// No session, so don't do anything
 		return;
 	}
+}
+
+function workSession() {
+	// Check if a temporay time has been set, then reset minutes
+	if (tempWorkMinutes) {
+		minutes = tempWorkMinutes;
+	}
+	else {
+		minutes = defaultWorkMinutes;
+	}
+
+	// Update session type
+	// Make sure both break sessions are reset
+	timerBreakSession = false;
+	timerLongBreakSession = false;
+	timerWorkSession = true;
+
+	// Update UI
+	toggle.removeAttribute("aria-pressed");
+	switchTheme("default");
+
+	// Reset timer interface values
+	timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+	timerSeconds.innerHTML = "00";
 }
 
 function breakSession() {
@@ -363,39 +437,42 @@ function breakSession() {
 	timerSeconds.innerHTML = "00";
 }
 
-function workSession() {
+function longBreakSession() {
 	// Check if a temporay time has been set, then reset minutes
-	if (tempWorkMinutes) {
-		minutes = tempWorkMinutes;
+	if (tempLongBreakMinutes) {
+		minutes = tempLongBreakMinutes;
 	}
 	else {
-		minutes = defaultWorkMinutes;
+		minutes = defaultLongBreakMinutes;
 	}
 
 	// Update session type
-	timerBreakSession = false;
-	timerWorkSession = true;
+	timerWorkSession = false;
+	timerLongBreakSession = true;
 
 	// Update UI
-	toggle.removeAttribute("aria-pressed");
-	switchTheme("default");
+	toggle.setAttribute("aria-pressed", "true");
+	switchTheme("longbreak");
 
 	// Reset timer interface values
 	timerMinutes.innerHTML = ("0" + minutes).slice(-2);
 	timerSeconds.innerHTML = "00";
 }
 
-function checkReset() {
+function decideReset() {
 	// Hide first
 	// Handles cases where the timer is started and when the timer is toggled to another session
 	hide(reset);
 
-	// Only show on appropriate session and if the timer hasn't started
+	// If the timer hasn't started, only show reset button on appropriate session
 	if (!timerSessionStarted) {
 		if (tempWorkMinutes && timerWorkSession) {
 			show(reset);
 		}
 		else if (tempBreakMinutes && timerBreakSession) {
+			show(reset);
+		}
+		else if (tempLongBreakMinutes && timerLongBreakSession) {
 			show(reset);
 		}
 	}
@@ -458,11 +535,17 @@ toggle.addEventListener("click", function() {
 	}
 	// Break session
 	else {
-		breakSession();
+		// Decide whether regular or break session
+		if (timerSessions < 4) {
+			breakSession();
+		}
+		else {
+			longBreakSession();
+		}
 	}
 
 	// See if reset button should be displayed
-	checkReset();
+	decideReset();
 });
 
 // Timer
@@ -518,6 +601,19 @@ reset.addEventListener("click", function() {
 			timerMinutes.innerHTML = ("0" + minutes).slice(-2);
 			timerSeconds.innerHTML = "00";
 		}
+		else if (timerLongBreakSession) {
+			tempLongBreakMinutes = null;
+			minutes = defaultLongBreakMinutes;
+
+			// Update UI
+			hide(timerInput);
+			show(timer);
+			hide(reset);
+
+			// Reset timer interface values
+			timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+			timerSeconds.innerHTML = "00";
+		}
 	}
 });
 
@@ -535,7 +631,7 @@ play.addEventListener("click", function() {
 		timerSessionStarted = true;
 
 		// Hide reset button
-		checkReset();
+		decideReset();
 
 		// Clear sessions if session set has been reached
 		if (timerWorkSession && timerSessions == 4) {
