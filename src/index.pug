@@ -56,8 +56,10 @@ block content
 					svg(class="controls__icon-stop" viewbox="0 0 32 32")
 						use(xlink:href="#icon-stop")
 
-			//- Sessions TODO
+			//- Sessions
 			div.sessions
+				each val in ["one", "two", "three", "four"]
+					div(class="sessions__marker " + "sessions__" + val)
 
 			//- Menu TODO
 			div.menu

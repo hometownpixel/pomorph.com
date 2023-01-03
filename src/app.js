@@ -27,6 +27,7 @@ let timerSessionStarted = false; // Whether session has started
 let timerWorkSession = false; // Whether it's a work session
 let timerBreakSession = false; // Whether it's a break session
 let timerRunning = false; // Whether timer is running
+let timerSessions = 0; // Keep track of the number of work sessions
 
 // Get UI elements
 const root = document.querySelector("html")
@@ -40,6 +41,12 @@ const reset = document.querySelector(".timer-reset");
 const play = document.querySelector(".controls__play");
 const pause = document.querySelector(".controls__pause");
 const stop = document.querySelector(".controls__stop");
+const sessionMarkers = document.querySelectorAll(".sessions__marker");
+const sessionCompleted = "sessions__marker_completed";
+const sessionOne = document.querySelector(".sessions__one");
+const sessionTwo = document.querySelector(".sessions__two");
+const sessionThree = document.querySelector(".sessions__three");
+const sessionFour = document.querySelector(".sessions__four");
 
 //
 // FUNCTIONS
@@ -247,7 +254,18 @@ function startTimer(finishTime) {
 			show(play);
 			hide(stop);
 			clickable(timer, true);
-			checkReset();
+			updateSessions();
+
+			// Automatically swich to a work/break session
+			if (timerWorkSession) {
+				breakSession();
+				// Make sure to run this last, otherwise the reset button will carry over between sessions
+				checkReset();
+			}
+			else if (timerBreakSession) {
+				workSession();
+				checkReset();
+			}
 		}
 	}
 
@@ -383,6 +401,38 @@ function checkReset() {
 	}
 }
 
+function updateSessions() {
+	// Only track/update if it's a work session
+	if (timerWorkSession) {
+		// Increment sessions
+		timerSessions++;
+		
+		// Update UI
+		switch(timerSessions) {
+			case 1:
+				sessionOne.classList.add(sessionCompleted);
+				break;
+			case 2:
+				sessionTwo.classList.add(sessionCompleted);
+				break;
+			case 3:
+				sessionThree.classList.add(sessionCompleted);
+				break;
+			case 4:
+				sessionFour.classList.add(sessionCompleted);
+				break;
+		}
+	}
+}
+
+function clearSessions() {
+	timerSessions = 0;
+
+	sessionMarkers.forEach((marker) => {
+		marker.classList.remove(sessionCompleted);
+	});
+}
+
 //
 // EVENTS
 //
@@ -486,6 +536,11 @@ play.addEventListener("click", function() {
 
 		// Hide reset button
 		checkReset();
+
+		// Clear sessions if session set has been reached
+		if (timerWorkSession && timerSessions == 4) {
+			clearSessions();
+		}
 
 		// Calculate finish time and start timer
 		timerStartTime = Date.parse(new Date());
