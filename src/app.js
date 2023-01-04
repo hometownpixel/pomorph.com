@@ -32,8 +32,10 @@ let timerRunning = false; // Whether timer is running
 let timerSessions = 0; // Keep track of the number of work sessions
 
 // Get UI elements
-const root = document.querySelector("html")
-const toggle = document.querySelector(".session-toggle__btn")
+const root = document.documentElement;
+const subdialPies = document.querySelectorAll(".subdials__pie");
+const pieClasses = ["one-to-ten__pie", "total__pie", "one-to-sixty__pie"];
+const toggle = document.querySelector(".session-toggle__btn");
 const timer = document.querySelector(".timer-display");
 const timerMinutes = document.querySelector(".timer-display__minutes");
 const timerSeconds = document.querySelector(".timer-display__seconds");
@@ -112,6 +114,39 @@ function initialLoad() {
 }
 
 // TIMER //
+
+function startSubdials() {
+	// Add subdial animations by adding classes to their respective elements
+	for (let i = 0; i < subdialPies.length; i++) {
+		subdialPies[i].classList.add(pieClasses[i]);
+	}
+
+	// Provide time in seconds to CSS variable (used by total subdial)
+	root.style.setProperty("--subdial-seconds", minutes * 60 + "s")
+
+	// Change CSS variable that controls animation play state
+	root.style.setProperty("--animation-play-state", "running");
+}
+
+function pauseSubdials() {
+	// Change CSS variable that controls animation play state
+	root.style.setProperty("--animation-play-state", "paused");
+}
+
+function resumeSubdials() {
+	// Change CSS variable that controls animation play state
+	root.style.setProperty("--animation-play-state", "running");
+}
+
+function stopSubdials() {
+	// Change CSS variable that controls animation play state
+	root.style.setProperty("--animation-play-state", "paused");
+
+	// Remove subdial animations by removing classes from their respective elements
+	for (let i = 0; i < subdialPies.length; i++) {
+		subdialPies[i].classList.remove(pieClasses[i]);
+	}
+}
 
 function decideTime(selector) {
 	// Get time value
@@ -293,6 +328,7 @@ function startTimer(finishTime) {
 			hide(pause);
 			show(play);
 			hide(stop);
+			stopSubdials();
 			clickable(timer, true);
 			updateSessions();
 
@@ -340,6 +376,7 @@ function pauseTimer() {
 	// Update UI
 	hide(pause);
 	show(play);
+	pauseSubdials();
 }
 
 function resumeTimer() {
@@ -354,6 +391,7 @@ function resumeTimer() {
 	// Update UI
 	hide(play);
 	show(pause);
+	resumeSubdials();
 }
 
 function stopTimer() {
@@ -372,8 +410,9 @@ function stopTimer() {
 		hide(pause);
 		show(play);
 
-		// Hide stop since the session has been terminated
+		// Hide stop and stop subdials since the session has been terminated
 		hide(stop);
+		stopSubdials();
 
 		// Reset timer interface values
 		timerMinutes.innerHTML = ("0" + minutes).slice(-2);
@@ -638,11 +677,12 @@ play.addEventListener("click", function() {
 			clearSessions();
 		}
 
-		// Calculate finish time and start timer
+		// Calculate finish time and start timer and subdials
 		timerStartTime = Date.parse(new Date());
 		minutesInMs = minutesToMs(minutes);
 		timerFinishTime = new Date(timerStartTime + minutesInMs);
 		startTimer(timerFinishTime);
+		startSubdials();
 	}
 	// Resume
 	else if (!timerRunning) {

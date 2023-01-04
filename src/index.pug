@@ -6,8 +6,20 @@ block prepend head
 block content
 	main.app.container
 		div.app__inner.container.container_readable
-			//- Sub-dials TODO
-			div.sub-dials
+			// Subdials
+			div.subdials
+				div.one-to-ten
+					svg(class="one-to-ten__icon" viewbox="0 0 72 72")
+						use(xlink:href="#icon-small-subdial")
+					div.subdials__pie
+				div.total
+					svg(class="total__icon" viewbox="0 0 132 132")
+						use(xlink:href="#icon-large-subdial")
+					div.subdials__pie
+				div.one-to-sixty
+					svg(class="one-to-sixty__icon" viewbox="0 0 72 72")
+						use(xlink:href="#icon-small-subdial")
+					div.subdials__pie
 
 			// Session toggle
 			div.session-toggle
@@ -39,8 +51,8 @@ block content
 
 				// Reset
 				button(class="timer-reset hidden", type="button")
-							svg(class="timer-reset__icon" viewbox="0 0 32 32")
-								use(xlink:href="#icon-reset")
+					svg(class="timer-reset__icon" viewbox="0 0 32 32")
+						use(xlink:href="#icon-reset")
 
 			// Controls
 			div.controls
@@ -64,7 +76,7 @@ block content
 			//- Menu TODO
 			div.menu
 
-//- Sub-dials: 1-10 seconds, total time, 10-60 seconds
+//- Sub-dials: 1-10 seconds, total time, 1-60 seconds
 //- Digital timer and time input
 //- Play, pause, stop
 //- Session tracker

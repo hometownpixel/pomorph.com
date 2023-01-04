@@ -3,19 +3,193 @@
 //====================
 
 .app {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
 	background: var(--white);
 	box-shadow: 0 .4rem 1.2rem .4rem $shadow;
 	padding-top: 1.6rem;
 	padding-bottom: 3.2rem;
 
 	@include mq(large) {
-		border-radius: 10rem 10rem 35% 35%;
+		border-radius: 10rem 10rem 20% 20%;
 		box-shadow: 0 6.4rem var(--mercury), 0 6.4rem 1.2rem .4rem $shadow;
 		padding-top: 6.4rem;
 		padding-bottom: 6.4rem;
+	}
+}
+
+.app__inner {
+	width: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+}
+
+.subdials {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.one-to-ten,
+.one-to-sixty {
+	position: relative;
+	height: 7.2rem;
+	width: 7.2rem;
+
+	@include mq(large) {
+		height: 13.2rem;
+		width: 13.2rem;
+	}
+}
+
+.total {
+	position: relative;
+	height: 13.2rem;
+	width: 13.2rem;
+
+	@include mq(large) {
+		height: 24.8rem;
+		width: 24.8rem;
+	}
+}
+
+.one-to-ten__icon,
+.one-to-sixty__icon {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 7.2rem;
+	z-index: 3;
+	color: var(--white);
+	fill: var(--wild-sand);
+
+	@include mq(large) {
+		width: 13.2rem;
+	}
+}
+
+.total__icon {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 13.2rem;
+	z-index: 3;
+	color: var(--white);
+	fill: var(--wild-sand);
+
+	@include mq(large) {
+		width: 24.8rem;
+	}
+}
+
+// Adapted from Kitty Giraudel's "CSS pie timer revisited"
+// https://kittygiraudel.com/2021/04/11/css-pie-timer-revisited/
+.one-to-ten__pie,
+.one-to-sixty__pie {
+	position: relative;
+	height: 7.2rem;
+	width: 7.2rem;
+	border-radius: 50%;
+
+	@include mq(large) {
+		height: 13.2rem;
+		width: 13.2rem;
+	}
+}
+
+.total__pie {
+	position: relative;
+	height: 13.2rem;
+	width: 13.2rem;
+	border-radius: 50%;
+
+	@include mq(large) {
+		height: 24.8rem;
+		width: 24.8rem;
+	}
+}
+
+.one-to-ten__pie::before,
+.one-to-ten__pie::after,
+.one-to-sixty__pie::before,
+.one-to-sixty__pie::after,
+.total__pie::before,
+.total__pie::after  {
+	content: "";
+	// Shape as half-circles
+	width: 50%;
+	height: 100%;
+	border-radius: 50rem 0 0 50rem;
+	// Position on left side
+	position: absolute;
+	left: 0;
+	// Spin from center right point
+	transform-origin: center right;
+}
+
+// Place mask pseudo-element on top
+.one-to-ten__pie::before,
+.one-to-sixty__pie::before,
+.total__pie::before {
+	z-index: 1;
+	background-color: var(--white);
+}
+
+// Spinning pseudo-element
+.one-to-ten__pie::after,
+.one-to-sixty__pie::after,
+.total__pie::after {
+	background: var(--color-primary);
+}
+
+// Animation properties for one-to-ten, total, and one-to-sixty
+.one-to-ten__pie::before,
+.one-to-ten__pie::after {
+	animation-duration: 10s;
+	animation-iteration-count: infinite;
+	animation-play-state: var(--animation-play-state);
+}
+
+.total__pie::before,
+.total__pie::after {
+	animation-duration: var(--subdial-seconds);
+	animation-play-state: var(--animation-play-state);
+}
+
+.one-to-sixty__pie::before,
+.one-to-sixty__pie::after {
+	animation-duration: 60s;
+	animation-iteration-count: infinite;
+	animation-play-state: var(--animation-play-state);
+}
+
+// Single step halfway through
+.one-to-ten__pie::before,
+.one-to-sixty__pie::before,
+.total__pie::before {
+	animation-name: mask;
+	animation-timing-function: steps(1);
+}
+
+// Make rotation linear
+.one-to-ten__pie::after,
+.one-to-sixty__pie::after,
+.total__pie::after {
+	animation-name: rotate;
+	animation-timing-function: linear;
+}
+
+@keyframes mask {
+	50%,
+	100% {
+		background-color: var(--color-primary);
+		transform: rotate(0.5turn);
+	}
+}
+
+@keyframes rotate {
+	to {
+		transform: rotate(1turn);
 	}
 }
 
@@ -24,6 +198,7 @@
 .session-toggle {
 	display: flex;
 	justify-content: center;
+	margin-top: 4.8rem;
 }
 
 .session-toggle__btn {
@@ -81,8 +256,9 @@
 }
 
 .timer {
+	// Keep content width so that it's not the width of the parent (important for reset button)
+	align-self: center;
 	position: relative;
-	display: inline-block;
 	margin-top: 1.6rem;
 }
 
