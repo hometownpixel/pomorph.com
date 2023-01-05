@@ -5,17 +5,22 @@ block prepend head
 
 block content
 	main.app.container
-		div.app__inner.container.container_readable
+		div.app-features.container.container_readable
 			// Subdials
 			div.subdials
+				// One to ten
 				div.one-to-ten
 					svg(class="one-to-ten__icon" viewbox="0 0 72 72")
 						use(xlink:href="#icon-small-subdial")
 					div.subdials__pie
+
+				// Total
 				div.total
 					svg(class="total__icon" viewbox="0 0 132 132")
 						use(xlink:href="#icon-large-subdial")
 					div.subdials__pie
+
+				// One to sixty
 				div.one-to-sixty
 					svg(class="one-to-sixty__icon" viewbox="0 0 72 72")
 						use(xlink:href="#icon-small-subdial")
@@ -42,6 +47,7 @@ block content
 					input(
 						class="timer-input__minutes"
 						maxlength="2"
+						name="minutes"
 						placeholder="MM"
 						size="2"
 						type="tel"
@@ -56,28 +62,91 @@ block content
 
 			// Controls
 			div.controls
+				// Play
 				button(class="controls__play" type="button")
 					svg(class="controls__icon-play" viewbox="0 0 32 32")
 						use(xlink:href="#icon-play")
 
+				// Pause
 				button(class="controls__pause hidden" type="button")
 					svg(class="controls__icon-pause" viewbox="0 0 32 32")
 						use(xlink:href="#icon-pause")
 				
+				// Stop
 				button(class="controls__stop hidden" type="button")
 					svg(class="controls__icon-stop" viewbox="0 0 32 32")
 						use(xlink:href="#icon-stop")
 
-			//- Sessions
+			// Sessions
 			div.sessions
 				each val in ["one", "two", "three", "four"]
 					div(class="sessions__marker " + "sessions__" + val)
 
-			//- Menu TODO
-			div.menu
+		// Menu
+		div.app-menu
+			// Settings drawer
+			div.settings
+				div.settings__inner.container.container_readable
+					h2.settings__heading Settings
+					div.settings__subheading-container
+						h3.settings__subheading Time
+						hr.settings__hr-wave
+					ul.settings__time-list
+						li.settings__time-item
+							label(for="work") Work
+							input(
+								class="settings__input settings__work-time"
+								maxlength="2"
+								name="work"
+								placeholder="25 mins"
+								size="7"
+								type="tel"
+							)
+						li.settings__time-item
+							label(for="short-break") Short break
+							input(
+								class="settings__input settings__short-break-time"
+								maxlength="2"
+								name="short-break"
+								placeholder="5 mins"
+								size="7"
+								type="tel"
+							)
+						li.settings__time-item
+							label(for="long-break") Long break
+							input(
+								class="settings__input settings__long-break-time"
+								maxlength="2"
+								name="long-break"
+								placeholder="20 mins"
+								size="7"
+								type="tel"
+							)
+					button(class="settings__btn-save" disabled type="button") Save
+					
+					button(class="settings__btn-close")
+						svg(class="settings__icon-close" viewbox="0 0 32 32")
+							use(xlink:href="#icon-close")
+						p Close
 
-//- Sub-dials: 1-10 seconds, total time, 1-60 seconds
-//- Digital timer and time input
-//- Play, pause, stop
-//- Session tracker
-//- Sound, stats, settings
+
+			// Menu bar
+			div.menu-bar
+				ul.menu-bar__list.container.container_readable
+					// Sound
+					li.menu-bar__item
+						button.menu-bar__btn
+							svg(class="menu-bar__icon menu-bar__icon-sound" viewbox="0 0 32 32")
+								use(xlink:href="#icon-sound")
+
+					// Stats
+					li.menu-bar__item
+						button.menu-bar__btn
+							svg(class="menu-bar__icon menu-bar__icon-stats" viewbox="0 0 32 32")
+								use(xlink:href="#icon-stats")
+
+					// Settings
+					li.menu-bar__item
+						button.menu-bar__btn
+							svg(class="menu-bar__icon menu-bar__icon-settings" viewbox="0 0 32 32")
+								use(xlink:href="#icon-settings")

@@ -71,7 +71,18 @@ html {
 	font-family: $fs-mono;
 }
 
-h1 {
+body {
+	font-size: 1.6rem;
+
+	@include mq(large) {
+		font-size: 2rem;
+	}
+}
+
+// == HEADINGS  == //
+h1,
+h2,
+h3 {
 	font-family: $fs-sans;
 	font-weight: 700;
 }

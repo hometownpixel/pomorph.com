@@ -13,7 +13,10 @@
 	--silver: #b9b9b9;
 	--gray: #808080;
 	--scorpion: #5c5c5c;
-	// Time value for total sub-dial
+	--tundora: #404040;
+	--icon-wave-settings: url("data:image/svg+xml;utf8,<svg id='wave' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M0,14.1846c2.2499,0,4.4999-.7282,6-2.1846,3.0003-2.9129,9.0007-2.9129,12,0,1.5,1.4563,3.75,2.1845,6,2.1846' fill='none' stroke='%23808080' stroke-miterlimit='10' stroke-width='2'/></svg>");
+	// Time value for total subdial
 	--subdial-seconds: 120s;
+	// Animation state for subdials
 	--animation-play-state: paused;
 }
