@@ -51,6 +51,17 @@ const sessionOne = document.querySelector(".sessions__one");
 const sessionTwo = document.querySelector(".sessions__two");
 const sessionThree = document.querySelector(".sessions__three");
 const sessionFour = document.querySelector(".sessions__four");
+const sound = document.querySelector(".menu-bar__btn-sound");
+const stats = document.querySelector(".menu-bar__btn-stats");
+const settings = document.querySelector(".menu-bar__btn-settings");
+const settingsDrawer = document.querySelector(".settings");
+const settingsClose = document.querySelector(".settings__btn-close");
+const settingsTimeInputs = document.querySelectorAll(".settings__input");
+const settingsSave = document.querySelector(".settings__btn-save");
+const settingsSaveReady = "settings__btn-save_ready";
+const settingsWorkTime = document.querySelector(".settings__work-time");
+const settingsBreakTime = document.querySelector(".settings__short-break-time");
+const settingsLongBreakTime = document.querySelector(".settings__long-break-time");
 
 //
 // FUNCTIONS
@@ -95,12 +106,50 @@ function minutesToMs(minutes) {
 	return minutes * 60 * 1000;
 }
 
+function initLocalStorage() {
+	if (localStorage.getItem("defaultWorkMinutes")) {
+		defaultWorkMinutes = localStorage.getItem("defaultWorkMinutes");
+	}
+
+	if (localStorage.getItem("defaultBreakMinutes")) {
+		defaultBreakMinutes = localStorage.getItem("defaultBreakMinutes");
+	}
+
+	if (localStorage.getItem("defaultLongBreakMinutes")) {
+		defaultLongBreakMinutes = localStorage.getItem("defaultLongBreakMinutes");
+	}
+
+	if (localStorage.getItem("tempWorkMinutes")) {
+		tempWorkMinutes = localStorage.getItem("tempWorkMinutes");
+	}
+
+	if (localStorage.getItem("tempBreakMinutes")) {
+		tempBreakMinutes = localStorage.getItem("tempBreakMinutes");
+	}
+
+	if (localStorage.getItem("tempLongBreakMinutes")) {
+		tempLongBreakMinutes = localStorage.getItem("tempLongBreakMinutes");
+	}
+
+	if (localStorage.getItem("timerSessions")) {
+		timerSessions = parseInt(localStorage.getItem("timerSessions"));
+	}
+}
+
 // INITIAL LOAD //
 
 function initialLoad() {
+	// Initialize localStorage
+	initLocalStorage();
+
 	// When page is first loaded...
-	// Set minutes to default
-	minutes = defaultWorkMinutes;
+	// Set minutes
+	if (tempWorkMinutes) {
+		minutes = tempWorkMinutes;
+	}
+	else {
+		minutes = defaultWorkMinutes;
+	}
 
 	// Make sure work session is ready to go
 	timerWorkSession = true;
@@ -111,6 +160,11 @@ function initialLoad() {
 	// Add time to timer interface
 	timerMinutes.innerHTML = ("0" + minutes).slice(-2);
 	timerSeconds.innerHTML = "00";
+
+	// See if reset button should be displayed
+	decideReset();
+	initSessions();
+	initSettings();
 }
 
 // TIMER //
@@ -195,16 +249,28 @@ function decideTime(selector) {
 				// Work session
 				if (timerWorkSession) {
 					tempWorkMinutes = .1; // Test value
+					
+					// Update localStorage
+					localStorage.setItem("tempWorkMinutes", tempWorkMinutes);
+
 					return tempWorkMinutes;
 				}
 				// Break session
 				else if (timerBreakSession) {
 					tempBreakMinutes = .05; // Test value
+
+					// Update localStorage
+					localStorage.setItem("tempBreakMinutes", tempBreakMinutes);
+
 					return tempBreakMinutes;
 				}
 				// Long break session
 				else if (timerLongBreakSession) {
 					tempLongBreakMinutes = .2; // Test value
+
+					// Update localStorage
+					localStorage.setItem("tempLongBreakMinutes", tempLongBreakMinutes);
+
 					return tempLongBreakMinutes;
 				}
 			}
@@ -212,16 +278,28 @@ function decideTime(selector) {
 				// Work session
 				if (timerWorkSession) {
 					tempWorkMinutes = .2; // Test value
+
+					// Update localStorage
+					localStorage.setItem("tempWorkMinutes", tempWorkMinutes);
+
 					return tempWorkMinutes;
 				}
 				// Break session
 				else if (timerBreakSession) {
 					tempBreakMinutes = .1; // Test value
+
+					// Update localStorage
+					localStorage.setItem("tempBreakMinutes", tempBreakMinutes);
+
 					return tempBreakMinutes;
 				}
 				// Long break session
 				else if (timerLongBreakSession) {
 					tempLongBreakMinutes = .2; // Test value
+
+					// Update localStorage
+					localStorage.setItem("tempLongBreakMinutes", tempLongBreakMinutes);
+
 					return tempLongBreakMinutes;
 				}
 			}
@@ -230,16 +308,28 @@ function decideTime(selector) {
 				// Work session
 				if (timerWorkSession) {
 					tempWorkMinutes = t;
+
+					// Update localStorage
+					localStorage.setItem("tempWorkMinutes", tempWorkMinutes);
+
 					return tempWorkMinutes;
 				}
 				// Break session
 				else if (timerBreakSession) {
 					tempBreakMinutes = t;
+
+					// Update localStorage
+					localStorage.setItem("tempBreakMinutes", tempBreakMinutes);
+
 					return tempBreakMinutes;
 				}
 				// Long break session
 				else if (timerLongBreakSession) {
 					tempLongBreakMinutes = t;
+
+					// Update localStorage
+					localStorage.setItem("tempLongBreakMinutes", tempLongBreakMinutes);
+
 					return tempLongBreakMinutes;
 				}
 			}
@@ -319,6 +409,7 @@ function startTimer(finishTime) {
 		// Stop when the remaing time gets to zero
 		if (time.total <= 0) {
 			timerSessionStarted = false;
+			timerRunning = false;
 			clearInterval(timerInterval)
 
 			// Make sure to reset time to original value
@@ -517,12 +608,39 @@ function decideReset() {
 	}
 }
 
+function initSessions() {
+	// Update UI
+	switch(timerSessions) {
+		case 1:
+			sessionOne.classList.add(sessionCompleted);
+			break;
+		case 2:
+			sessionOne.classList.add(sessionCompleted);
+			sessionTwo.classList.add(sessionCompleted);
+			break;
+		case 3:
+			sessionOne.classList.add(sessionCompleted);
+			sessionTwo.classList.add(sessionCompleted);
+			sessionThree.classList.add(sessionCompleted);
+			break;
+		case 4:
+			sessionOne.classList.add(sessionCompleted);
+			sessionTwo.classList.add(sessionCompleted);
+			sessionThree.classList.add(sessionCompleted);
+			sessionFour.classList.add(sessionCompleted);
+			break;
+	}
+}
+
 function updateSessions() {
 	// Only track/update if it's a work session
 	if (timerWorkSession) {
 		// Increment sessions
 		timerSessions++;
-		
+
+		// Update local storage
+		localStorage.setItem("timerSessions", timerSessions);
+
 		// Update UI
 		switch(timerSessions) {
 			case 1:
@@ -604,7 +722,7 @@ timer.addEventListener("click", function() {
 	}
 });
 
-// Input
+// Minutes input
 timerInputMinutes.addEventListener("input", function() {
 	// Replace any character that is not a number
 	// Adapted from: https://knplabs.com/en/blog/how2-tips-how-to-restrict-allowed-characters-inside-a-text-input-in-one-line-of-code
@@ -616,6 +734,10 @@ reset.addEventListener("click", function() {
 	if (!timerSessionStarted) {
 		if (timerWorkSession) {
 			tempWorkMinutes = null;
+
+			// Remove from localStorage
+			localStorage.removeItem("tempWorkMinutes");
+
 			minutes = defaultWorkMinutes;
 
 			// Update UI
@@ -629,6 +751,10 @@ reset.addEventListener("click", function() {
 		}
 		else if (timerBreakSession) {
 			tempBreakMinutes = null;
+
+			// Remove from localStorage
+			localStorage.removeItem("tempBreakMinutes");
+
 			minutes = defaultBreakMinutes;
 
 			// Update UI
@@ -642,6 +768,10 @@ reset.addEventListener("click", function() {
 		}
 		else if (timerLongBreakSession) {
 			tempLongBreakMinutes = null;
+
+			// Remove from localStorage
+			localStorage.removeItem("tempLongBreakMinutes");
+			
 			minutes = defaultLongBreakMinutes;
 
 			// Update UI
@@ -709,6 +839,180 @@ pause.addEventListener("click", function() {
 // Stop
 stop.addEventListener("click", function() {
 	stopTimer();
+});
+
+// Settings
+settings.addEventListener("click", function() {
+	// Check whether settings drawer should be hidden or closed
+	if (settingsDrawer.classList.contains("hidden")) {
+		show(settingsDrawer);
+	}
+	else {
+		hide(settingsDrawer);
+	}
+});
+
+// Settings close
+settingsClose.addEventListener("click", function() {
+	hide(settingsDrawer);
+});
+
+settingsTimeInputs.forEach((timeInput) => {
+		timeInput.addEventListener("input", function() {
+			// Replace any character that is not a number
+			// Adapted from: https://knplabs.com/en/blog/how2-tips-how-to-restrict-allowed-characters-inside-a-text-input-in-one-line-of-code
+			timeInput.value = timeInput.value.replace(/[^0-9+]/g, "");
+
+			// Check for value
+			if (timeInput.value) {
+				// Remove disabled attribute and add ready class
+				settingsSave.removeAttribute("disabled");
+				settingsSave.classList.add(settingsSaveReady);
+			}
+			else {
+				// Check if all the inputs are empty
+				if (!settingsWorkTime.value && !settingsBreakTime.value && !settingsLongBreakTime.value) {
+					// No values, so make sure disabled attribute is set and ready class is removed
+					settingsSave.setAttribute("disabled", "");
+					settingsSave.classList.remove(settingsSaveReady);
+				}
+			}
+		});
+	});
+
+function decideDefaultTime(value) {
+	let t = parseInt(value);
+
+	// Check if value is not a number
+	if (isNaN(t)) {
+		return;
+	}
+	// It is a number...
+	else {
+		// If number is too big or small, return "reasonable" defaults
+		if (t < 1) {
+			return 1;
+		}
+		else if (t > 55) {
+			return 55;
+		}
+		// Number seems to be fine so return it
+		else {
+			return t;
+		}
+	}
+}
+
+function initSettings() {
+	// Remove input values in case they were carried over from page load/no save
+	settingsWorkTime.value = "";
+	settingsBreakTime.value = "";
+	settingsLongBreakTime.value = "";
+
+	// Add placeholders
+	settingsWorkTime.setAttribute("placeholder", defaultWorkMinutes + " mins");
+	settingsBreakTime.setAttribute("placeholder", defaultBreakMinutes + " mins");
+	settingsLongBreakTime.setAttribute("placeholder", defaultLongBreakMinutes + " mins");
+}
+
+// Settings save
+settingsSave.addEventListener("click", function() {
+	if (settingsWorkTime.value) {
+		let time = decideDefaultTime(settingsWorkTime.value);
+
+		if (time) {
+			defaultWorkMinutes = time;
+
+			// Update localStorage
+			localStorage.setItem("defaultWorkMinutes", defaultWorkMinutes);
+
+			// Also reset temp minutes
+			tempWorkMinutes = null;
+			localStorage.removeItem("tempWorkMinutes");
+
+			// Update placeholder
+			settingsWorkTime.value = "";
+			settingsWorkTime.setAttribute("placeholder", time + " mins");
+
+			// If possible, update UI and pass new value to minutes
+			if (!timerRunning && timerWorkSession) {
+				minutes = defaultWorkMinutes;
+
+				// Reset timer interface values
+				timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+				timerSeconds.innerHTML = "00";
+
+				// Hide reset button in case a temp time was already set
+				decideReset();
+			}
+		}
+	}
+
+	if (settingsBreakTime.value) {
+		let time = decideDefaultTime(settingsBreakTime.value);
+
+		if (time) {
+			defaultBreakMinutes = time;
+
+			// Update localStorage
+			localStorage.setItem("defaultBreakMinutes", defaultBreakMinutes);
+
+			// Also reset temp minutes
+			tempBreakMinutes = null;
+			localStorage.removeItem("tempBreakMinutes");
+
+			// Update placeholder
+			settingsBreakTime.value = "";
+			settingsBreakTime.setAttribute("placeholder", time + " mins");
+
+			// If possible, update UI and pass new value to minutes
+			if (!timerRunning && timerBreakSession) {
+					minutes = defaultBreakMinutes;
+
+					// Reset timer interface values
+					timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+					timerSeconds.innerHTML = "00";
+
+					// Hide reset button in case a temp time was already set
+					decideReset();
+			}
+		}
+	}
+
+	if (settingsLongBreakTime.value) {
+		let time = decideDefaultTime(settingsLongBreakTime.value);
+
+		if (time) {
+			defaultLongBreakMinutes = time;
+
+			// Update localStorage
+			localStorage.setItem("defaultLongBreakMinutes", defaultLongBreakMinutes);
+
+			// Also reset temp minutes
+			tempLongBreakMinutes = null;
+			localStorage.removeItem("tempLongBreakMinutes");
+
+			// Update placeholder
+			settingsLongBreakTime.value = "";
+			settingsLongBreakTime.setAttribute("placeholder", time + " mins");
+
+			// If possible, update UI and pass new value to minutes
+			if (!timerRunning && timerLongBreakSession) {
+					minutes = defaultLongBreakMinutes;
+
+					// Reset timer interface values
+					timerMinutes.innerHTML = ("0" + minutes).slice(-2);
+					timerSeconds.innerHTML = "00";
+
+					// Hide reset button in case a temp time was already set
+					decideReset();
+			}
+		}
+	}
+
+	// Disable after "save"
+	settingsSave.setAttribute("disabled", "");
+	settingsSave.classList.remove(settingsSaveReady);
 });
 
 //

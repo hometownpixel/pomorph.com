@@ -85,7 +85,7 @@ block content
 		// Menu
 		div.app-menu
 			// Settings drawer
-			div.settings
+			div.settings.hidden
 				div.settings__inner.container.container_readable
 					h2.settings__heading Settings
 					div.settings__subheading-container
@@ -123,7 +123,7 @@ block content
 								type="tel"
 							)
 					button(class="settings__btn-save" disabled type="button") Save
-					
+
 					button(class="settings__btn-close")
 						svg(class="settings__icon-close" viewbox="0 0 32 32")
 							use(xlink:href="#icon-close")
@@ -135,18 +135,18 @@ block content
 				ul.menu-bar__list.container.container_readable
 					// Sound
 					li.menu-bar__item
-						button.menu-bar__btn
+						button.menu-bar__btn.menu-bar__btn-sound
 							svg(class="menu-bar__icon menu-bar__icon-sound" viewbox="0 0 32 32")
 								use(xlink:href="#icon-sound")
 
 					// Stats
 					li.menu-bar__item
-						button.menu-bar__btn
+						button.menu-bar__btn.menu-bar__btn-stats
 							svg(class="menu-bar__icon menu-bar__icon-stats" viewbox="0 0 32 32")
 								use(xlink:href="#icon-stats")
 
 					// Settings
 					li.menu-bar__item
-						button.menu-bar__btn
+						button.menu-bar__btn.menu-bar__btn-settings
 							svg(class="menu-bar__icon menu-bar__icon-settings" viewbox="0 0 32 32")
 								use(xlink:href="#icon-settings")
