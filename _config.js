@@ -24,6 +24,7 @@ site.use(sass({
 site.copy("assets/favicons", ".");
 site.copy("assets/fonts", "fonts");
 site.copy("assets/img", "img");
+site.copy("assets/sound", "sound");
 
 // Load assets
 site.loadAssets([".js"]);

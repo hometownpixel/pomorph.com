@@ -5,6 +5,7 @@ Sources that were immensely helpful:
 - https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/
 - https://www.htmlcenter.com/blog/pausing-javascript-timers/
 - https://knplabs.com/en/blog/how2-tips-how-to-restrict-allowed-characters-inside-a-text-input-in-one-line-of-code
+- https://gomakethings.com/how-to-play-a-sound-with-javascript/
 
 ---------------------------------------- */
 
@@ -56,7 +57,10 @@ const sessionOne = document.querySelector(".sessions__one");
 const sessionTwo = document.querySelector(".sessions__two");
 const sessionThree = document.querySelector(".sessions__three");
 const sessionFour = document.querySelector(".sessions__four");
-const sound = document.querySelector(".menu-bar__btn-sound");
+const btnSound = document.querySelector(".menu-bar__btn-sound");
+const itemSound = document.querySelector(".menu-bar__item-sound");
+const btnSoundOff = document.querySelector(".menu-bar__btn-sound-off");
+const itemSoundOff = document.querySelector(".menu-bar__item-sound-off");
 const stats = document.querySelector(".menu-bar__btn-stats");
 const btnCloseStats = document.querySelector(".stats__btn-close");
 const spanStatsSessions = document.querySelector(".stats__figure-sessions");
@@ -72,6 +76,11 @@ const settingsSaveReady = "settings__btn-save_ready";
 const settingsWorkTime = document.querySelector(".settings__work-time");
 const settingsBreakTime = document.querySelector(".settings__short-break-time");
 const settingsLongBreakTime = document.querySelector(".settings__long-break-time");
+
+// Sounds
+let soundMuted = false;
+const soundChime = new Audio("/sound/rcp-chime-bell-ding-3x.mp3");
+const soundClick = new Audio("/sound/rcp-click-04.mp3");
 
 //
 // FUNCTIONS
@@ -191,6 +200,12 @@ function updateStats() {
 	spanStatsSessions.innerHTML = statsSessions;
 	spanStatsAverage.innerHTML = statsAverageSession + "m";
 	spanStatsTotal.innerHTML = outputNumHoursMinutes(statsTotalTime);
+}
+
+function playSound(sound) {
+	if (!soundMuted) {
+		sound.play();
+	}
 }
 
 // INITIAL LOAD //
@@ -481,6 +496,9 @@ function startTimer(finishTime) {
 			clickable(timer, true);
 			updateSessions();
 
+			// Play sound
+			playSound(soundChime);
+
 			// Automatically swich to a work/break session
 			if (timerWorkSession) {
 				// Update stats too
@@ -764,6 +782,9 @@ toggle.addEventListener("click", function() {
 
 	// See if reset button should be displayed
 	decideReset();
+
+	// Play sound
+	playSound(soundClick);
 });
 
 // Timer
@@ -849,6 +870,9 @@ reset.addEventListener("click", function() {
 
 // Start
 play.addEventListener("click", function() {
+	// Play sound
+	playSound(soundClick);
+
 	// Prevent "double" running of the function by checking if a session has already been started
 	if (!timerSessionStarted) {
 		// Decide time
@@ -890,6 +914,9 @@ pause.addEventListener("click", function() {
 	// Check if timer is running
 	if (timerRunning) {
 		pauseTimer();
+
+		// Play sound
+		playSound(soundClick);
 	}
 	// Prevent "double" running
 	else {
@@ -900,6 +927,29 @@ pause.addEventListener("click", function() {
 // Stop
 stop.addEventListener("click", function() {
 	stopTimer();
+
+	// Play sound
+	playSound(soundClick);
+});
+
+// Sound button
+btnSound.addEventListener("click", function() {
+	// Mute
+	soundMuted = true;
+
+	// Update UI
+	hide(itemSound);
+	show(itemSoundOff);
+});
+
+// Sound off button
+btnSoundOff.addEventListener("click", function() {
+	// Unmute
+	soundMuted = false;
+
+	// Update UI
+	hide(itemSoundOff);
+	show(itemSound);
 });
 
 // Stats button

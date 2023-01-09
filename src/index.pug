@@ -155,10 +155,16 @@ block content
 			div.menu-bar
 				ul.menu-bar__list.container.container_readable
 					// Sound
-					li.menu-bar__item
+					li.menu-bar__item.menu-bar__item-sound
 						button.menu-bar__btn.menu-bar__btn-sound
 							svg(class="menu-bar__icon menu-bar__icon-sound" viewbox="0 0 32 32")
 								use(xlink:href="#icon-sound")
+
+					// Sound off
+					li.menu-bar__item.menu-bar__item-sound-off.hidden
+						button.menu-bar__btn.menu-bar__btn-sound-off
+							svg(class="menu-bar__icon menu-bar__icon-sound-off" viewbox="0 0 32 32")
+								use(xlink:href="#icon-sound-off")
 
 					// Stats
 					li.menu-bar__item
