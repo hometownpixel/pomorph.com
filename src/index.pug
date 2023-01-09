@@ -84,6 +84,28 @@ block content
 
 		// Menu
 		div.app-menu
+			// Stats drawer
+			div.stats.hidden
+				div.stats__inner.container.container_readable
+					h2.stats__heading Lifetime Stats
+					div.stats__sheet
+						p.stats__group
+							span.stats__figure.stats__figure-sessions 12
+							span.stats__desc Work sessions
+
+						p.stats__group
+							span.stats__figure.stats__figure-average 25.2m
+							span.stats__desc Average work session
+
+						p.stats__group
+							span.stats__figure.stats__figure-total 5h 2m
+							span.stats__desc Total time
+
+					button(class="stats__btn-close")
+						svg(class="stats__icon-close" viewbox="0 0 32 32")
+							use(xlink:href="#icon-close")
+						p Close
+
 			// Settings drawer
 			div.settings.hidden
 				div.settings__inner.container.container_readable
@@ -128,7 +150,6 @@ block content
 						svg(class="settings__icon-close" viewbox="0 0 32 32")
 							use(xlink:href="#icon-close")
 						p Close
-
 
 			// Menu bar
 			div.menu-bar

@@ -427,6 +427,7 @@
 	}
 }
 
+.stats,
 .settings {
 	background: var(--scorpion);
 	border-left: .4rem solid var(--gray);
@@ -442,15 +443,74 @@
 }
 
 .settings__inner {
-	max-width: $readable-width / 2;
+	max-width: calc($readable-width / 2);
 }
 
+.stats__heading,
 .settings__heading {
 	font-size: 2.6rem;
 	text-align: center;
 
 	@include mq(large) {
 		font-size: 4rem;
+	}
+}
+
+.stats__sheet {
+	display: flex;
+	flex-flow: column nowrap;
+	margin-top: 1.6rem;
+
+	@include mq(medium) {
+		flex-flow: row nowrap;
+	}
+}
+
+.stats__group {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+
+	@include mq(medium) {
+		flex: 1;
+		padding-left: .4rem;
+		padding-right: .4rem;
+	}
+
+	@include mq(large) {
+		padding-left: 1.6rem;
+		padding-right: 1.6rem;
+	}
+}
+
+.stats__group + .stats__group {
+	margin-top: 1.6rem;
+
+	@include mq(medium) {
+		margin-top: initial;
+	}
+}
+
+.stats__figure {
+	font-weight: bold;
+	font-size: 2rem;
+
+	@include mq(large) {
+		font-size: 2.4rem;
+	}
+}
+
+.stats__desc {
+	// font-family: $fs-sans;
+	font-weight: 700;
+	letter-spacing: .05rem;
+	line-height: 1.2;
+	margin-top: .2rem;
+	text-align: center;
+	text-transform: uppercase;
+
+	@include mq(medium) {
+		font-size: 1.6rem;
 	}
 }
 
@@ -538,6 +598,7 @@
 	cursor: pointer;
 }
 
+.stats__btn-close,
 .settings__btn-close {
 	background: none;
 	border: 0;
@@ -557,6 +618,7 @@
 	}
 }
 
+.stats__icon-close,
 .settings__icon-close {
 	display: inline-block;
 	fill: var(--gray);

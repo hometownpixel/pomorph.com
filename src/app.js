@@ -19,6 +19,11 @@ let defaultLongBreakMinutes = .2;
 let tempWorkMinutes, tempBreakMinutes, tempLongBreakMinutes;
 let minutes, minutesInMs;
 
+// Stats
+let statsSessions = 0;
+let statsAverageSession = 0;
+let statsTotalTime = 0;
+
 // Timer state and functionality
 let timerInterval; // Timer's interval ID
 let timerStartTime; // When timer starts
@@ -53,7 +58,12 @@ const sessionThree = document.querySelector(".sessions__three");
 const sessionFour = document.querySelector(".sessions__four");
 const sound = document.querySelector(".menu-bar__btn-sound");
 const stats = document.querySelector(".menu-bar__btn-stats");
+const btnCloseStats = document.querySelector(".stats__btn-close");
+const spanStatsSessions = document.querySelector(".stats__figure-sessions");
+const spanStatsAverage = document.querySelector(".stats__figure-average");
+const spanStatsTotal = document.querySelector(".stats__figure-total");
 const settings = document.querySelector(".menu-bar__btn-settings");
+const drawerStats = document.querySelector(".stats");
 const settingsDrawer = document.querySelector(".settings");
 const settingsClose = document.querySelector(".settings__btn-close");
 const settingsTimeInputs = document.querySelectorAll(".settings__input");
@@ -106,6 +116,13 @@ function minutesToMs(minutes) {
 	return minutes * 60 * 1000;
 }
 
+function outputNumHoursMinutes(minutes) {
+	numHours = parseInt(minutes / 60);
+	numMinutes = minutes % 60;
+
+	return numHours + "h " + numMinutes + "m";
+}
+
 function initLocalStorage() {
 	if (localStorage.getItem("defaultWorkMinutes")) {
 		defaultWorkMinutes = localStorage.getItem("defaultWorkMinutes");
@@ -136,6 +153,46 @@ function initLocalStorage() {
 	}
 }
 
+function initStats() {
+	if (localStorage.getItem("statsSessions")) {
+		statsSessions = localStorage.getItem("statsSessions");
+	}
+
+	if (localStorage.getItem("statsAverageSession")) {
+		statsAverageSession = localStorage.getItem("statsAverageSession");
+	}
+
+	if (localStorage.getItem("statsTotalTime")) {
+		statsTotalTime = localStorage.getItem("statsTotalTime");
+	}
+
+	// Update UI
+	spanStatsSessions.innerHTML = statsSessions;
+	spanStatsAverage.innerHTML = statsAverageSession + "m";
+	spanStatsTotal.innerHTML = outputNumHoursMinutes(statsTotalTime);
+}
+
+function updateStats() {
+	// Increment sessions
+	statsSessions++;
+	
+	// Calculate total time
+	statsTotalTime += minutes;
+
+	// Calculate average work session time
+	statsAverageSession = parseFloat(statsTotalTime / statsSessions).toFixed(2);
+
+	// Update localStorage
+	localStorage.setItem("statsSessions", statsSessions);
+	localStorage.setItem("statsAverageSession", statsAverageSession);
+	localStorage.setItem("statsTotalTime", statsTotalTime);
+
+	// Update UI
+	spanStatsSessions.innerHTML = statsSessions;
+	spanStatsAverage.innerHTML = statsAverageSession + "m";
+	spanStatsTotal.innerHTML = outputNumHoursMinutes(statsTotalTime);
+}
+
 // INITIAL LOAD //
 
 function initialLoad() {
@@ -164,6 +221,7 @@ function initialLoad() {
 	// See if reset button should be displayed
 	decideReset();
 	initSessions();
+	initStats();
 	initSettings();
 }
 
@@ -425,6 +483,9 @@ function startTimer(finishTime) {
 
 			// Automatically swich to a work/break session
 			if (timerWorkSession) {
+				// Update stats too
+				updateStats();
+
 				// Decide whether a regular or long break
 				if (timerSessions < 4) {
 					breakSession();
@@ -841,8 +902,29 @@ stop.addEventListener("click", function() {
 	stopTimer();
 });
 
-// Settings
+// Stats button
+stats.addEventListener("click", function() {
+	// Close settings drawer if it's open
+	if (!settingsDrawer.classList.contains("hidden")) {
+		hide(settingsDrawer);
+	}
+
+	// Check whether stats drawer should be hidden or closed
+	if (drawerStats.classList.contains("hidden")) {
+		show(drawerStats);
+	}
+	else {
+		hide(drawerStats);
+	}
+});
+
+// Settings button
 settings.addEventListener("click", function() {
+	// Close stats drawer if it's open
+	if (!drawerStats.classList.contains("hidden")) {
+		hide(drawerStats);
+	}
+
 	// Check whether settings drawer should be hidden or closed
 	if (settingsDrawer.classList.contains("hidden")) {
 		show(settingsDrawer);
@@ -852,7 +934,12 @@ settings.addEventListener("click", function() {
 	}
 });
 
-// Settings close
+// Close stats button
+btnCloseStats.addEventListener("click", function() {
+	hide(drawerStats);
+});
+
+// Close settings button
 settingsClose.addEventListener("click", function() {
 	hide(settingsDrawer);
 });
