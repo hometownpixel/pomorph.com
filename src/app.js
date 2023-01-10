@@ -56,6 +56,7 @@ let timerMinutesInMs; // Current session's time value in ms
 // UI ELEMENTS AND CLASSES //
 
 const root = document.documentElement;
+const title = document.querySelector("title");
 
 // Subdials
 const divsSubdialPie = document.querySelectorAll(".subdials__pie");
@@ -701,6 +702,9 @@ function startTimer(finishTime) {
 		spanTimerDisplayMinutes.innerHTML = ("0" + time.minutes).slice(-2);
 		spanTimerDisplaySeconds.innerHTML = ("0" + time.seconds).slice(-2);
 
+		// Update title with time values
+		title.innerHTML = ("0" + time.minutes).slice(-2) + ":" + ("0" + time.seconds).slice(-2) + " — Pomorph";
+
 		// Stop when the remaing time gets to zero
 		if (time.total <= 0) {
 			timerSessionStarted = false;
@@ -717,6 +721,9 @@ function startTimer(finishTime) {
 			stopSubdials();
 			clickable(divTimerDisplay, true);
 			updateSessions();
+
+			// Update title
+			title.innerHTML = "Session complete! — Pomorph";
 
 			// Play sound
 			playSound(soundChime);
@@ -817,6 +824,9 @@ function stopTimer() {
 
 		// See if reset button should be displayed
 		decideReset()
+
+		// Update title
+		title.innerHTML = "Pomorph — A simple Pomodoro timer";
 	}
 	else {
 		// No session, so don't do anything
