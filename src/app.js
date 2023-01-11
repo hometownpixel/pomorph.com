@@ -1034,6 +1034,9 @@ btnPlay.addEventListener("click", function() {
 	// Resume
 	else if (!timerRunning) {
 		resumeTimer();
+		
+		// Play sound
+		playSound(soundClick);
 	}
 	// Prevent "double" running
 	else {

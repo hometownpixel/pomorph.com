@@ -88,19 +88,22 @@ block content
 			div.stats.hidden
 				div.stats__inner.container.container_readable
 					h2.stats__heading Lifetime Stats
+
+					// Stats sheet
 					div.stats__sheet
 						p.stats__group
-							span.stats__figure.stats__figure-sessions 12
+							span.stats__figure.stats__figure-sessions 0
 							span.stats__desc Work sessions
 
 						p.stats__group
-							span.stats__figure.stats__figure-average 25.2m
+							span.stats__figure.stats__figure-average 0m
 							span.stats__desc Average work session
 
 						p.stats__group
-							span.stats__figure.stats__figure-total 5h 2m
+							span.stats__figure.stats__figure-total 0h 0m
 							span.stats__desc Total time
 
+					// Close
 					button(class="stats__btn-close")
 						svg(class="stats__icon-close" viewbox="0 0 32 32")
 							use(xlink:href="#icon-close")
@@ -110,9 +113,12 @@ block content
 			div.settings.hidden
 				div.settings__inner.container.container_readable
 					h2.settings__heading Settings
+
 					div.settings__subheading-container
 						h3.settings__subheading Time
 						hr.settings__hr-wave
+
+					// Time inputs
 					ul.settings__time-list
 						li.settings__time-item
 							label(for="work") Work
@@ -144,8 +150,11 @@ block content
 								size="7"
 								type="tel"
 							)
+
+					// Save
 					button(class="settings__btn-save" disabled type="button") Save
 
+					// Close
 					button(class="settings__btn-close")
 						svg(class="settings__icon-close" viewbox="0 0 32 32")
 							use(xlink:href="#icon-close")
