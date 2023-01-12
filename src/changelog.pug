@@ -5,8 +5,30 @@ block prepend head
 	- const desc = "The history of notable changes to Pomorph."
 
 block content
-	main.container.container_readable
-		//- Filter from jstransformer-markdown-it package
-		//- https://pugjs.org/language/filters.html
-		:markdown-it()
-			TODO
+	main.changelog.container.content
+		div.changelog__inner.container.container_readable
+			//- Filter from jstransformer-markdown-it package
+			//- https://pugjs.org/language/filters.html
+			:markdown-it()
+				# Changelog
+
+				---
+
+				## v. 0.1.0
+
+				January 12, 2023
+
+				Initial release. Hello, world!
+
+				I feel like anyone who looks at the [source code](https://github.com/hometownpixel/pomorph.com) will probably cry. The thing about being a beginner is that there are so many things that I just don’t know. Along with everything else, JavaScript is one of them.
+
+				Pomorph is messy, but it’s labor of love completed for [CS50x](https://cs50.harvard.edu/x/) with the hope that as I learn, practice, and gain experience, it can be something that grows with me. But really, I’m just a wannabe designer dabbling with web development and making a proper mess.
+
+				Many apologies for these current issues:
+
+				- Subdials are not fully synced with the timer and drift… especially when pause/play buttons are used. I’ll have to rewrite the logic when I know more about what I’m doing.
+				- Sound, visual, and logic abnormalities in Safari. For some reason things look and work better in Firefox and Chromium-based browsers.
+
+				I’ll be taking a break from Pomorph, so it may not see updates until I have a little more experience and understanding, but Pomorph will definitely (hopefully) continue to be developed and updated in the future. I have lots of fun plans for it.
+
+				Thanks for checking it out, and apologies if Pomorph is woefully broken and inadequate in its current state.

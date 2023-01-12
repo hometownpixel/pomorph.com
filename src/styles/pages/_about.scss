@@ -77,10 +77,10 @@
 
 .about a:link,
 .about a:visited {
+	box-shadow: inset 0 -.14em;
 	color: var(--mercury);
 	font-weight: bold;
 	text-decoration: none;
-	box-shadow: inset 0 -.14em;
 }
 
 .about a:focus,
