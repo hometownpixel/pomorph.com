@@ -12,6 +12,15 @@
 	flex-direction: column;
 	padding-top: 3.2rem;
 	padding-bottom: 2.4rem;
+
+	@include mq(large) {
+		padding-top: 6.4rem;
+	}
+}
+
+// Override on "app"/home page
+.app ~ .footer {
+	padding-top: 3.2rem;
 }
 
 .footer__logo {
