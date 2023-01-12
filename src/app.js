@@ -208,6 +208,29 @@ function initTime() {
 	}
 }
 
+// Initialize sound state
+function initSound() {
+	// See if localStorage value can be retrieved; if it can, update global variable
+	if (localStorage.getItem("soundMuted")) {
+		// Convert to boolean value
+		// https://stackoverflow.com/questions/263965/how-can-i-convert-a-string-to-boolean-in-javascript
+		if (localStorage.getItem("soundMuted") === "true") {
+			soundMuted = true;
+
+			// Update UI
+			hide(itemSound);
+			show(itemSoundOff);
+		}
+		else {
+			soundMuted = false;
+
+			// Update UI
+			hide(itemSoundOff);
+			show(itemSound);
+		}
+	}
+}
+
 // Initialize session markers
 function initSessions() {
 	// See if localStorage value can be retrieved; if it can, update global variable
@@ -604,7 +627,7 @@ function updateSessions() {
 		// Increment sessions
 		timerSessions++;
 
-		// Update local storage
+		// Update localStorage
 		localStorage.setItem("timerSessions", timerSessions);
 
 		// Update UI
@@ -629,6 +652,9 @@ function updateSessions() {
 function clearSessions() {
 	// Reset global variable
 	timerSessions = 0;
+
+	// Update localStorage
+	localStorage.setItem("timerSessions", timerSessions);
 
 	// Remove completed class from each session marker
 	divsSessionMarker.forEach((marker) => {
@@ -841,6 +867,7 @@ function initialLoad() {
 	// Initialize localStorage/UI
 	initTime();
 	initSessions();
+	initSound();
 	initStats();
 	initSettings();
 
@@ -1072,6 +1099,9 @@ btnSound.addEventListener("click", function() {
 	// Mute
 	soundMuted = true;
 
+	// Update localStorage
+	localStorage.setItem("soundMuted", soundMuted);
+
 	// Update UI
 	hide(itemSound);
 	show(itemSoundOff);
@@ -1081,6 +1111,9 @@ btnSound.addEventListener("click", function() {
 btnSoundOff.addEventListener("click", function() {
 	// Unmute
 	soundMuted = false;
+
+	// Update localStorage
+	localStorage.setItem("soundMuted", soundMuted);
 
 	// Update UI
 	hide(itemSoundOff);
