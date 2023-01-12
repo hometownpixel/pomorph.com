@@ -12,11 +12,6 @@
 	flex-direction: column;
 	padding-top: 3.2rem;
 	padding-bottom: 2.4rem;
-
-	@include mq(large) {
-		// Drop shadow of app is 6.4rem
-		padding-top: 9.6rem;
-	}
 }
 
 .footer__logo {

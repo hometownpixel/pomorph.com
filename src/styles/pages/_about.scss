@@ -1,0 +1,297 @@
+//====================
+// ABOUT
+//====================
+
+.about__heading,
+.features__heading,
+.how-to-use__heading,
+.support__heading {
+	font-weight: 900;
+	color: var(--white);
+}
+
+.about__heading {
+	position: relative;
+	font-size: 4.2rem;
+	line-height: 1.1;
+
+	@include mq(large) {
+		font-size: 7.2rem;
+		padding-top: 4rem;
+		// Faux line break
+		width: calc($readable-width / 1.3);
+	}
+}
+
+.about__heading::before {
+	content: "";
+	background-image: url("/img/pomorph.svg");
+	background-size: 90px;
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: -1.2rem;
+	left: -4rem;
+	z-index: -1;
+
+	@include mq(large) {
+		background-size: 180px;
+		top: 1rem;
+		left: -8rem;
+	}
+}
+
+.about__hr-wave {
+	border: 0;
+	background-image: var(--icon-wave);
+	background-repeat: repeat-x;
+	// Wave icon has a height/width of 24
+	height: 2.4rem;
+	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
+	width: 100%;
+
+	@include mq(large) {
+		margin-top: 3.2rem;
+		margin-bottom: 3.2rem;
+	}
+}
+
+.about p {
+	line-height: 1.4;
+}
+
+.about p + p {
+	margin-top: 2.4rem;
+}
+
+.about__intro-para {
+	font-weight: bold;
+	font-size: x-large;
+
+	@include mq(large) {
+		font-size: xx-large;
+	}
+}
+
+.about a:link,
+.about a:visited {
+	color: var(--mercury);
+	font-weight: bold;
+	text-decoration: none;
+	box-shadow: inset 0 -.14em;
+}
+
+.about a:focus,
+.about a:hover,
+.about a:active {
+	color: var(--white);
+}
+
+// == FEATURES AND HOW TO USE == //
+
+.features {
+	margin-top: 3.2rem;
+
+	@include mq(large) {
+		margin-top: 6.4rem;
+	}
+}
+
+.features__heading-container {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.features__heading-container::after {
+	content: "";
+	background-image: url("/img/gear.svg");
+	background-repeat: no-repeat;
+	background-size: 80px;
+	width: 80px;
+	height: 80px;
+	position: absolute;
+	top: -2rem;
+	right: -1rem;
+	z-index: 1;
+
+	@include mq(large) {
+		background-size: 100px;
+		width: 100px;
+		height: 100px;
+		right: -5rem;
+	}
+}
+
+.features__heading,
+.how-to-use__heading {
+	font-size: 3.2rem;
+
+	@include mq(large) {
+		font-size: 4.8rem;
+	}
+}
+
+.features__heading {
+	margin-right: .8rem;
+}
+
+.features__hr-wave {
+	flex: 1;
+	border: 0;
+	background-image: var(--icon-wave-about);
+	background-repeat: repeat-x;
+	// Wave icon has a height/width of 24
+	height: 2.4rem;
+}
+
+.features__list,
+.how-to-use__list {
+	margin-top: 2.4rem;
+	margin-bottom: 2.4rem;
+	padding-left: 3.2rem;
+
+	@include mq(large) {
+		margin-top: 3.2rem;
+		margin-bottom: 3.2rem;
+		padding-left: 4.8rem;
+	}
+}
+
+.how-to-use__list {
+	margin-top: 2.4rem;
+}
+
+.features__item {
+	padding-left: .4rem;
+}
+
+.features__item + .features__item,
+.how-to-use__item + .how-to-use__item {
+	margin-top: 1.2rem;
+}
+
+.features__bottom {
+	position: relative;
+}
+
+.features__bottom::before {
+	content: "";
+	background-image: url("/img/gear.svg");
+	background-size: 60px;
+	background-repeat: no-repeat;
+	width: 60px;
+	height: 60px;
+	position: absolute;
+	top: -1.5rem;
+	left: -1rem;
+	z-index: 1;
+
+	@include mq(large) {
+		background-size: 80px;
+		width: 80px;
+		height: 80px;
+		top: -3rem;
+		left: -5rem;
+	}
+}
+
+.how-to-use {
+	background: var(--white);
+	border-radius: 2.4rem;
+	color: var(--color-secondary);
+	margin-top: 3.2rem;
+	padding: 1.6rem;
+	
+
+	@include mq(large) {
+		margin-left: -3.2rem;
+		margin-right: -3.2rem;
+		margin-top: 6.4rem;
+		padding: 3.2rem;
+	}
+}
+
+.how-to-use__heading {
+	color: var(--color-primary);
+	text-align: center;
+}
+
+.how-to-use__heading::before {
+	content: "";
+	background-image: url("/img/play.svg");
+	background-size: 80px;
+	background-repeat: no-repeat;
+	display: block;
+	position: relative;
+	left: calc(50% - 40px);
+	width: 80px;
+	height: 80px;
+	margin-bottom: 1.6rem;
+
+	@include mq(large) {
+		background-size: 100px;
+		left: calc(50% - 50px);
+		width: 100px;
+		height: 100px;
+	}
+}
+
+.how-to-use__intro {
+	margin-top: 1.6rem;
+	text-align: center;
+}
+
+// == SUPPORT == //
+
+.support {
+	position: relative;
+	// Super helpful:
+	// https://css-tricks.com/almanac/properties/b/border-image/
+	// Border is 30px
+	// Doesn't work well in Safari, unfortunately
+	border: 3rem solid transparent;
+	border-image: url("/img/border.svg") 10 round;
+	margin: -1.6rem;
+	margin-top: 3.2rem;
+	padding: .2rem;
+
+	@include mq(large) {
+		margin: -4.6rem;
+		margin-top: 6.4rem;
+		margin-bottom: 3.2rem;
+		padding: 1.6rem;
+	}
+}
+
+.support::before {
+	content: "";
+	background-image: url("/img/questions.svg");
+	background-size: 120px;
+	width: 120px;
+	height: 90px;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: -5rem;
+	right: -3rem;
+	z-index: 1;
+
+	@include mq(large) {
+		background-size: 160px;
+		width: 160px;
+		height: 117px;
+		top: -5.5rem;
+		right: -3rem;
+	}
+}
+
+.support__heading {
+	font-size: 3.2rem;
+	margin-bottom: 1.6rem;
+
+	@include mq(large) {
+		font-size: 3.6rem;
+	}
+}

@@ -3,7 +3,7 @@
 //====================
 
 ::selection {
-	background-color: var(--color-primary);
+	background-color: var(--color-secondary);
 	color: var(--white);
 }
 
@@ -20,6 +20,10 @@ body {
 	@include mq(large) {
 		padding-top: 2.4rem;
 	}
+}
+
+.content {
+	padding-top: 4rem;
 }
 
 // Use to hide features/functionality depending on desired state

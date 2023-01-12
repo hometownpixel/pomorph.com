@@ -10,6 +10,7 @@
 	@include mq(large) {
 		border-radius: 10rem;
 		box-shadow: 0 6.4rem var(--mercury), 0 6.4rem 1.2rem .4rem $shadow;
+		margin-bottom: 6.4rem;
 		padding-top: 3.2rem;
 	}
 }
